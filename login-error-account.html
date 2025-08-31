@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Supply Chain Control Tower Platform - Account Error</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+        
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .language-switch {
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch:hover {
+            transform: scale(1.1);
+        }
+        
+        .error-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .error-message {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+
+    <!-- Language Switch -->
+    <div class="absolute top-6 right-6">
+        <button id="languageToggle" class="language-switch bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30">
+            <i class="fas fa-globe"></i>
+            <span id="currentLang">EN</span>
+        </button>
+    </div>
+
+    <!-- Main Login Container -->
+    <div class="glass-effect rounded-2xl p-8 w-full max-w-md relative z-10">
+        <!-- Logo and Title -->
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <i class="fas fa-tower-broadcast text-3xl text-white"></i>
+            </div>
+            <h1 id="platformTitle" class="text-2xl font-bold text-white mb-2">Smart Supply Chain Control Tower Platform</h1>
+            <p id="platformSubtitle" class="text-white text-opacity-80">Secure Access Portal</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-6">
+            <!-- Username Input -->
+            <div>
+                <label id="usernameLabel" for="username" class="block text-sm font-medium text-white text-opacity-90 mb-2">
+                    Username
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-user text-white text-opacity-60"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username"
+                        value="john.doe@company.com"
+                        class="input-focus w-full pl-10 pr-4 py-3 bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                    >
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div>
+                <label id="passwordLabel" for="password" class="block text-sm font-medium text-white text-opacity-90 mb-2">
+                    Password
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-lock text-white text-opacity-60"></i>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        value="••••••••"
+                        class="input-focus w-full pl-10 pr-4 py-3 bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                    >
+                    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <i class="fas fa-eye text-white text-opacity-60 hover:text-opacity-80"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message rounded-lg p-4 text-amber-300 text-sm flex items-start space-x-2">
+                <i class="fas fa-exclamation-triangle text-amber-300 mt-0.5 flex-shrink-0"></i>
+                <div>
+                    <p id="errorText" class="font-medium">Account does not exist or has been deactivated</p>
+                    <p id="errorSubtext" class="text-amber-200 mt-1">Please contact your system administrator for assistance</p>
+                </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="flex items-center justify-between">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" id="rememberMe" class="w-4 h-4 text-blue-600 bg-white bg-opacity-20 border-white border-opacity-30 rounded focus:ring-blue-500 focus:ring-2">
+                    <span id="rememberText" class="text-sm text-white text-opacity-80">Remember me</span>
+                </label>
+                <button type="button" id="forgotPassword" class="text-sm text-white text-opacity-80 hover:text-opacity-100 hover:underline">
+                    Forgot Password?
+                </button>
+            </div>
+
+            <!-- Login Button -->
+            <button 
+                type="submit" 
+                id="loginBtn"
+                class="btn-primary w-full py-3 px-4 rounded-lg text-white font-semibold text-lg"
+            >
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                <span id="loginBtnText">Sign In</span>
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center">
+            <p id="footerText" class="text-white text-opacity-60 text-sm">
+                © 2024 Smart Supply Chain Control Tower Platform. All rights reserved.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Language data
+        const languages = {
+            en: {
+                platformTitle: "Smart Supply Chain Control Tower Platform",
+                platformSubtitle: "Secure Access Portal",
+                usernameLabel: "Username",
+                passwordLabel: "Password",
+                usernamePlaceholder: "Enter your username",
+                passwordPlaceholder: "Enter your password",
+                rememberText: "Remember me",
+                forgotPassword: "Forgot Password?",
+                loginBtnText: "Sign In",
+                footerText: "© 2024 Smart Supply Chain Control Tower Platform. All rights reserved.",
+                currentLang: "EN",
+                errorText: "Account does not exist or has been deactivated",
+                errorSubtext: "Please contact your system administrator for assistance"
+            },
+            zh: {
+                platformTitle: "智慧供应链控制塔平台",
+                platformSubtitle: "安全访问门户",
+                usernameLabel: "账号",
+                passwordLabel: "密码",
+                usernamePlaceholder: "请输入您的账号",
+                passwordPlaceholder: "请输入您的密码",
+                rememberText: "记住账号密码",
+                forgotPassword: "忘记密码？",
+                loginBtnText: "登录",
+                footerText: "© 2024 智慧供应链控制塔平台。保留所有权利。",
+                currentLang: "中",
+                errorText: "账号不存在或已被停用",
+                errorSubtext: "请联系系统管理员获取帮助"
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        // DOM elements
+        const languageToggle = document.getElementById('languageToggle');
+        const currentLangSpan = document.getElementById('currentLang');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const rememberMe = document.getElementById('rememberMe');
+        const loginBtn = document.getElementById('loginBtn');
+        const togglePassword = document.getElementById('togglePassword');
+        const forgotPasswordBtn = document.getElementById('forgotPassword');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Language toggle functionality
+        languageToggle.addEventListener('click', () => {
+            currentLanguage = currentLanguage === 'en' ? 'zh' : 'en';
+            updateLanguage();
+        });
+
+        function updateLanguage() {
+            const lang = languages[currentLanguage];
+            
+            // Update all text elements
+            document.getElementById('platformTitle').textContent = lang.platformTitle;
+            document.getElementById('platformSubtitle').textContent = lang.platformSubtitle;
+            document.getElementById('usernameLabel').textContent = lang.usernameLabel;
+            document.getElementById('passwordLabel').textContent = lang.passwordLabel;
+            document.getElementById('usernamePlaceholder').placeholder = lang.usernamePlaceholder;
+            document.getElementById('passwordPlaceholder').placeholder = lang.passwordPlaceholder;
+            document.getElementById('rememberText').textContent = lang.rememberText;
+            document.getElementById('forgotPassword').textContent = lang.forgotPassword;
+            document.getElementById('loginBtnText').textContent = lang.loginBtnText;
+            document.getElementById('footerText').textContent = lang.footerText;
+            document.getElementById('errorText').textContent = lang.errorText;
+            document.getElementById('errorSubtext').textContent = lang.errorSubtext;
+            currentLangSpan.textContent = lang.currentLang;
+        }
+
+        // Password visibility toggle
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.innerHTML = type === 'password' ? 
+                '<i class="fas fa-eye text-white text-opacity-60 hover:text-opacity-80"></i>' : 
+                '<i class="fas fa-eye-slash text-white text-opacity-60 hover:text-opacity-80"></i>';
+        });
+
+        // Form validation
+        function validateForm() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            loginBtn.disabled = !username || !password;
+        }
+
+        usernameInput.addEventListener('input', validateForm);
+        passwordInput.addEventListener('click', function() {
+            // Clear the password field when clicked
+            if (this.value === '••••••••') {
+                this.value = '';
+                this.setAttribute('type', 'password');
+            }
+        });
+
+        // Remember me functionality
+        rememberMe.addEventListener('change', () => {
+            if (rememberMe.checked) {
+                localStorage.setItem('rememberMe', 'true');
+            } else {
+                localStorage.removeItem('rememberMe');
+                localStorage.removeItem('savedUsername');
+                localStorage.removeItem('savedPassword');
+            }
+        });
+
+        // Load saved credentials on page load
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('rememberMe') === 'true') {
+                const savedUsername = localStorage.getItem('savedUsername');
+                if (savedUsername) {
+                    usernameInput.value = savedUsername;
+                    rememberMe.checked = true;
+                }
+            }
+            validateForm();
+        });
+
+        // Save credentials on successful login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (rememberMe.checked) {
+                localStorage.setItem('savedUsername', usernameInput.value);
+            }
+            
+            // Simulate login process
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing In...';
+            loginBtn.disabled = true;
+            
+            setTimeout(() => {
+                // For demo purposes, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        });
+
+        // Forgot password functionality
+        forgotPasswordBtn.addEventListener('click', () => {
+            // Show forgot password modal
+            showForgotPasswordModal();
+        });
+
+        function showForgotPasswordModal() {
+            // This will be implemented in prototype 4
+            alert('Forgot password functionality will be implemented in the next prototype.');
+        }
+
+        // Initialize
+        updateLanguage();
+        validateForm();
+    </script>
+</body>
+</html>

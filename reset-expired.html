@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Expired - Supply Chain Control Tower Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#0f172a',
+                        accent: '#06b6d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        error: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+
+    <div class="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <!-- Logo and Title -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl mb-6 shadow-2xl">
+                    <i class="fas fa-clock text-4xl text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+                    Supply Chain Control Tower Platform
+                </h1>
+                <p class="text-gray-400">
+                    This password reset link is no longer valid
+                </p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
+                <!-- Error Icon and Message -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-full mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-400 text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">
+                        Link Has Expired
+                    </h2>
+                    <p class="text-gray-300 text-lg">
+                        This password reset link is no longer valid
+                    </p>
+                </div>
+
+                <!-- Explanation -->
+                <div class="bg-orange-500/20 border border-orange-500/30 rounded-lg p-6 mb-8">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-orange-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-medium text-orange-300 mb-2">
+                                Why did this happen?
+                            </h3>
+                            <ul class="text-sm text-orange-200 space-y-2">
+                                <li class="flex items-start space-x-2">
+                                    <i class="fas fa-clock text-orange-400 text-xs mt-1"></i>
+                                    <span>
+                                        The link has exceeded the 24-hour time limit
+                                    </span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <i class="fas fa-check-circle text-orange-400 text-xs mt-1"></i>
+                                    <span>
+                                        The password has already been reset using this link
+                                    </span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <i class="fas fa-shield-alt text-orange-400 text-xs mt-1"></i>
+                                    <span>
+                                        The link was used from a different device or location
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-4">
+                    <a href="forgot-password.html" class="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                        <i class="fas fa-redo"></i>
+                        <span>Request New Reset Link</span>
+                    </a>
+                    <a href="login.html" class="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-white/10 border border-white/20 text-white font-medium rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Back to Login</span>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContent = document.querySelector('.bg-white\\/10');
+            mainContent.style.transform = 'translateY(20px)';
+            mainContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                mainContent.style.transition = 'all 0.6s ease';
+                mainContent.style.transform = 'translateY(0)';
+                mainContent.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

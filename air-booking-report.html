@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Booking Report - Supply Chain Control Tower Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Classic and reliable dropdown positioning */
+        [id$="Dropdown"] {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            z-index: 9999 !important;
+            transition: all 0.2s ease-in-out;
+            animation: dropdownSlideIn 0.2s ease-out;
+            /* Force remove any conflicting styles */
+            transform: none !important;
+            box-sizing: border-box !important;
+        }
+        
+        @keyframes dropdownSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Smooth transitions for dropdown interactions */
+        [id$="Dropdown"] .p-2 {
+            transition: background-color 0.15s ease-in-out;
+        }
+        
+        [id$="Dropdown"] .p-2:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Ensure parent containers have relative positioning */
+        .relative {
+            position: relative !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
+    <div class="relative z-10 flex h-screen">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 bg-white/10 backdrop-blur-lg border-r border-white/20 flex flex-col">
+            <!-- Logo and Title -->
+            <div class="p-6 border-b border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tower-broadcast text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Supply Chain</h1>
+                        <p class="text-xs text-gray-400">Control Tower</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="font-medium">Home</span>
+                </a>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('dashboard')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-line text-lg"></i>
+                            <span class="font-medium">Dashboard</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="dashboard-arrow"></i>
+                    </button>
+                    <div id="dashboard-submenu" class="hidden pl-8 space-y-1">
+                        <a href="dashboard.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Operations Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 bg-blue-600/20 border border-blue-500/30 rounded-lg text-blue-300 transition-all" onclick="toggleSubmenu('reports')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-file-alt text-lg"></i>
+                            <span class="font-medium">Operations Report</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="reports-arrow"></i>
+                    </button>
+                    <div id="reports-submenu" class="pl-8 space-y-1">
+                        <a href="ocean-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Ocean Booking Report
+                        </a>
+                        <a href="air-booking-report.html" class="block px-4 py-2 text-sm text-blue-300 bg-blue-600/20 rounded transition-all">
+                            Air Booking Report
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('system')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-cog text-lg"></i>
+                            <span class="font-medium">System</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="system-arrow"></i>
+                    </button>
+                    <div id="system-submenu" class="hidden pl-8 space-y-1">
+                        <a href="user-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            User Management
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('basic')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-database text-lg"></i>
+                            <span class="font-medium">Basic Data</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="basic-arrow"></i>
+                    </button>
+                    <div id="basic-submenu" class="hidden pl-8 space-y-1">
+                        <a href="timezone-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Time Zone
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="p-4 border-t border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-white">admin</p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-1 bg-red-600/20 border border-red-500/30 text-red-300 rounded-lg hover:bg-red-600/30 transition-all text-sm">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="bg-white/10 backdrop-blur-lg border-b border-white/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Air Booking Report</h2>
+                        <p class="text-gray-400">View and analyze air freight booking data</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Header actions removed as requested -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-auto">
+                <!-- Search Criteria Section -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 mb-6" style="position: relative; z-index: 10;">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white flex items-center">
+                            <i class="fas fa-search mr-3 text-blue-400"></i>
+                            Search Criteria
+                        </h3>
+                        <button id="toggleSearch" class="flex items-center px-4 py-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-all duration-200 group">
+                            <i class="fas fa-chevron-down mr-2 transition-transform duration-200 group-hover:scale-110"></i>
+                            <span>Show More</span>
+                        </button>
+                    </div>
+                    
+                    <div id="searchForm" class="space-y-6">
+                        <!-- First Row - Core Search Criteria -->
+                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                            <!-- Booking Date -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-calendar-alt mr-2 text-blue-400"></i>
+                                    Booking Date
+                                </label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="relative">
+                                        <input type="text" id="bookingStartDate" placeholder="YYYY/M/D" 
+                                               class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" id="bookingEndDate" placeholder="YYYY/M/D" 
+                                               class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3PL -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-plane mr-2 text-green-400"></i>
+                                    3PL
+                                </label>
+                                <div class="relative">
+                                    <div id="tplInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('tpl')">
+                                        <span class="text-gray-400">Select 3PL...</span>
+                                    </div>
+                                    <div id="tplDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                        <div class="p-3 border-b border-white/10">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-sm font-medium text-gray-300">3PL Options</span>
+                                                <button onclick="selectAllOptions('tpl')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                            </div>
+                                            <input type="text" placeholder="Search 3PL..." 
+                                                   class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                   oninput="filterMultiOptions('tpl', this.value)">
+                                        </div>
+                                        <div class="p-2 space-y-1" id="tplOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Milestone -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-flag-checkered mr-2 text-yellow-400"></i>
+                                    Milestone
+                                </label>
+                                <div class="relative">
+                                    <div id="milestoneInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('milestone')">
+                                        <span class="text-gray-400">Select Milestone...</span>
+                                    </div>
+                                    <div id="milestoneDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                        <div class="p-3 border-b border-white/10">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-sm font-medium text-gray-300">Milestone Options</span>
+                                                <button onclick="selectAllOptions('milestone')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                            </div>
+                                            <input type="text" placeholder="Search Milestone..." 
+                                                   class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                   oninput="filterMultiOptions('milestone', this.value)">
+                                        </div>
+                                        <div class="p-2 space-y-1" id="milestoneOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Event Time (Local) -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-clock mr-2 text-purple-400"></i>
+                                    Event Time (Local)
+                                </label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="relative">
+                                        <input type="text" id="eventStartDate" placeholder="YYYY/M/D" 
+                                               class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" id="eventEndDate" placeholder="Click to select date" 
+                                               class="w-full px-3 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Customer -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-user-tie mr-2 text-cyan-400"></i>
+                                    Customer
+                                </label>
+                                <div class="relative">
+                                    <div id="customerInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('customer')">
+                                        <span class="text-gray-400">Select Customer...</span>
+                                    </div>
+                                    <div id="customerDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                        <div class="p-3 border-b border-white/10">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-sm font-medium text-gray-300">Customer Options</span>
+                                                <button onclick="selectAllOptions('customer')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                            </div>
+                                            <input type="text" placeholder="Search Customer..." 
+                                                   class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                   oninput="filterMultiOptions('customer', this.value)">
+                                        </div>
+                                        <div class="p-2 space-y-1" id="customerOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Additional Search Criteria (Collapsible) -->
+                        <div id="additionalCriteria" class="hidden space-y-6 pt-6 border-t border-white/10">
+                            <!-- Second Row (in expanded view) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                                <!-- Booking Type -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                        <i class="fas fa-file-contract mr-2 text-indigo-400"></i>
+                                        Booking Type
+                                    </label>
+                                    <div class="relative">
+                                        <div id="bookingTypeInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('bookingType')">
+                                            <span class="text-gray-400">Select Booking Type...</span>
+                                        </div>
+                                        <div id="bookingTypeDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                            <div class="p-3 border-b border-white/10">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-sm font-medium text-gray-300">Booking Type Options</span>
+                                                    <button onclick="selectAllOptions('bookingType')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                                </div>
+                                                <input type="text" placeholder="Search Booking Type..." 
+                                                       class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                       oninput="filterMultiOptions('bookingType', this.value)">
+                                            </div>
+                                            <div class="p-2 space-y-1" id="bookingTypeOptions">
+                                                <!-- Options will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Load Type -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                        <i class="fas fa-boxes mr-2 text-orange-400"></i>
+                                        Load Type
+                                    </label>
+                                    <div class="relative">
+                                        <div id="loadTypeInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('loadType')">
+                                            <span class="text-gray-400">Select Load Type...</span>
+                                        </div>
+                                        <div id="loadTypeDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                            <div class="p-3 border-b border-white/10">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-sm font-medium text-gray-300">Load Type Options</span>
+                                                    <button onclick="selectAllOptions('loadType')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                                </div>
+                                                <input type="text" placeholder="Search Load Type..." 
+                                                       class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                       oninput="filterMultiOptions('loadType', this.value)">
+                                            </div>
+                                            <div class="p-2 space-y-1" id="loadTypeOptions">
+                                                <!-- Options will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service Level -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                        <i class="fas fa-star mr-2 text-yellow-400"></i>
+                                        Service Level
+                                    </label>
+                                    <div class="relative">
+                                        <div id="serviceLevelInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('serviceLevel')">
+                                            <span class="text-gray-400">Select Service Level...</span>
+                                        </div>
+                                        <div id="serviceLevelDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                            <div class="p-3 border-b border-white/10">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-sm font-medium text-gray-300">Service Level Options</span>
+                                                    <button onclick="selectAllOptions('serviceLevel')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                                </div>
+                                                <input type="text" placeholder="Search Service Level..." 
+                                                       class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                       oninput="filterMultiOptions('serviceLevel', this.value)">
+                                            </div>
+                                            <div class="p-2 space-y-1" id="serviceLevelOptions">
+                                                <!-- Options will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Origin -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                        <i class="fas fa-plane-departure mr-2 text-red-400"></i>
+                                        Origin
+                                    </label>
+                                    <div class="relative">
+                                        <div id="originInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('origin')">
+                                            <span class="text-gray-400">Select Origin...</span>
+                                        </div>
+                                        <div id="originDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                            <div class="p-3 border-b border-white/10">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-sm font-medium text-gray-300">Origin Options</span>
+                                                    <button onclick="selectAllOptions('origin')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                                </div>
+                                                <input type="text" placeholder="Search Origin..." 
+                                                       class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                       oninput="filterMultiOptions('origin', this.value)">
+                                            </div>
+                                            <div class="p-2 space-y-1" id="originOptions">
+                                                <!-- Options will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Destination -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                        <i class="fas fa-plane-arrival mr-2 text-green-400"></i>
+                                        Destination
+                                    </label>
+                                    <div class="relative">
+                                        <div id="destInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('dest')">
+                                            <span class="text-gray-400">Select Destination...</span>
+                                        </div>
+                                        <div id="destDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                            <div class="p-3 border-b border-white/10">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-sm font-medium text-gray-300">Destination Options</span>
+                                                    <button onclick="selectAllOptions('dest')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                                </div>
+                                                <input type="text" placeholder="Search Destination..." 
+                                                       class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                       oninput="filterMultiOptions('dest', this.value)">
+                                            </div>
+                                            <div class="p-2 space-y-1" id="destOptions">
+                                                <!-- Options will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Third Row (only BU, left-aligned with empty spaces) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                                <!-- BU -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                                        <i class="fas fa-building mr-2 text-blue-400"></i>
+                                        BU
+                                    </label>
+                                    <div class="relative">
+                                        <div id="buInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('bu')">
+                                            <span class="text-gray-400">Select BU...</span>
+                                        </div>
+                                        <div id="buDropdown" class="bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                            <div class="p-3 border-b border-white/10">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-sm font-medium text-gray-300">BU Options</span>
+                                                    <button onclick="selectAllOptions('bu')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                            </div>
+                                                <input type="text" placeholder="Search BU..." 
+                                                       class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                                       oninput="filterMultiOptions('bu', this.value)">
+                                            </div>
+                                            <div class="p-2 space-y-1" id="buOptions">
+                                                <!-- Options will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Empty spaces for remaining 4 columns -->
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons Row - Independent of query module -->
+                <div class="flex justify-between items-center mb-4">
+                    <!-- Export Button - Left side -->
+                    <button id="exportBtn" class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-lg hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                        <i class="fas fa-download mr-2"></i>Export to Excel
+                    </button>
+                    
+                    <!-- Search and Reset Buttons - Right side -->
+                    <div class="flex items-center space-x-3">
+                        <button id="searchBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 transform hover:scale-105 shadow-lg border border-blue-500/30">
+                            <i class="fas fa-search mr-2"></i>Search
+                        </button>
+                        <button id="resetBtn" class="px-6 py-3 bg-white/10 border border-white/20 text-white font-medium rounded-lg hover:bg-white/20 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                            <i class="fas fa-undo mr-2"></i>Clear & Reset
+                    </button>
+                    </div>
+                </div>
+
+                <!-- Report Table -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden" style="position: relative; z-index: 1;">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-white/20">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Booking No</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">HBL</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">MBL</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Booking Date</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Booking Type</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">3PL</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Load Type</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Customer</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Shipper</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Pick Up Country</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Pick Up City</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Consignee</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Consignee Country</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Consignee City</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Incoterm</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Service Level</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">BU</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Origin</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Destination</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Milestone</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Event Time(Local)</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Event Time(UTC)</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Received Time(UTC)</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">Gap(Hour)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody" class="divide-y divide-white/10">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="bg-white/20 px-4 py-3 flex items-center justify-between">
+                        <div class="text-sm text-gray-300">
+                            Showing <span id="startRecord">1</span> to <span id="endRecord">30</span> of <span id="totalRecords">45</span> results
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button id="prevPage" class="px-3 py-1 bg-white/10 border border-white/20 text-white rounded hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="px-3 py-1 text-white">
+                                Page <span id="currentPage">1</span> of <span id="totalPages">2</span>
+                            </span>
+                            <button id="nextPage" class="px-3 py-1 bg-white/10 border border-white/20 text-white rounded hover:bg-white/20 transition-colors">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Global pagination variables
+        let currentPage = 1;
+        let recordsPerPage = 30;
+        let allData = [];
+        let filteredData = [];
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded - Initializing page...');
+            
+            // Set default dates for Event Time (Local) - 30 days ago to today
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+            
+            // Format dates as YYYY/MM/DD
+            document.getElementById('eventStartDate').value = formatDate(thirtyDaysAgo);
+            document.getElementById('eventEndDate').value = formatDate(today);
+            
+            console.log('Default dates set:', {
+                eventStartDate: document.getElementById('eventStartDate').value,
+                eventEndDate: document.getElementById('eventEndDate').value
+            });
+            
+            // Initialize date pickers
+            initializeDatePickers();
+            console.log('Date pickers initialized');
+            
+            // Expand reports submenu
+            document.getElementById('reports-submenu').classList.remove('hidden');
+            document.getElementById('reports-arrow').style.transform = 'rotate(180deg)';
+            
+            // Load sample data
+            allData = getAllSampleData();
+            filteredData = [...allData];
+            loadSampleData();
+            console.log('Sample data loaded');
+            
+            // Initialize multi-select dropdowns
+            initializeMultiDropdowns();
+            console.log('Multi-select dropdowns initialized');
+            
+            // Update active filters count
+            updateActiveFiltersCount();
+            console.log('Active filters count updated');
+            
+            // Add event listeners for search and reset buttons
+            const searchBtn = document.getElementById('searchBtn');
+            if (searchBtn) {
+                searchBtn.addEventListener('click', performSearch);
+                console.log('Search button event listener added');
+            } else {
+                console.error('Search button not found!');
+            }
+
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', resetSearch);
+                console.log('Reset button event listener added');
+            } else {
+                console.error('Reset button not found!');
+            }
+            
+            // Add event listeners for pagination buttons
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+            
+            if (prevPageBtn) {
+                prevPageBtn.addEventListener('click', goToPreviousPage);
+                console.log('Previous page button event listener added');
+            } else {
+                console.error('Previous page button not found!');
+            }
+            
+            if (nextPageBtn) {
+                nextPageBtn.addEventListener('click', goToNextPage);
+                console.log('Next page button event listener added');
+            } else {
+                console.error('Next page button not found!');
+            }
+            
+            console.log('Page initialization completed');
+        });
+
+        // Format date as YYYY/M/D (no leading zeros)
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // No padding
+            const day = date.getDate(); // No padding
+            return `${year}/${month}/${day}`;
+        }
+
+        // Initialize modern date pickers
+        function initializeDatePickers() {
+            console.log('Initializing modern date pickers...');
+            
+            // Get date input elements
+            const dateInputs = [
+                { element: document.getElementById('bookingStartDate'), label: 'Booking Start Date' },
+                { element: document.getElementById('bookingEndDate'), label: 'Booking End Date' },
+                { element: document.getElementById('eventStartDate'), label: 'Event Start Date' },
+                { element: document.getElementById('eventEndDate'), label: 'Event End Date' }
+            ];
+            
+            dateInputs.forEach(({ element, label }) => {
+                if (element) {
+                    console.log(`Configuring date input: ${label}`);
+                    setupDateInput(element, label);
+                } else {
+                    console.error(`Date input not found: ${label}`);
+                }
+            });
+            
+            console.log('Modern date pickers initialization completed');
+        }
+        
+        // Setup individual date input with modern picker
+        function setupDateInput(input, label) {
+            // Remove readonly and set placeholder
+            input.removeAttribute('readonly');
+            input.placeholder = 'Click to select date';
+            
+            // Add calendar icon to input container
+            const container = input.parentElement;
+            if (!container.querySelector('.calendar-icon')) {
+                const calendarIcon = document.createElement('div');
+                calendarIcon.className = 'calendar-icon absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 cursor-pointer hover:text-blue-300 transition-colors';
+                calendarIcon.innerHTML = '<i class="fas fa-calendar"></i>';
+                calendarIcon.onclick = (e) => {
+                    e.stopPropagation();
+                    showDatePicker(input, label);
+                };
+                container.appendChild(calendarIcon);
+            }
+            
+            // Add click event to input field
+            input.addEventListener('click', function(e) {
+                e.preventDefault();
+                showDatePicker(input, label);
+            });
+            
+            // Add keyboard input support
+            input.addEventListener('input', function(e) {
+                let value = e.target.value;
+                // Allow manual input of dates
+                if (value && isValidDateFormat(value)) {
+                    input.style.borderColor = '#22c55e';
+                            updateActiveFiltersCount();
+                        }
+            });
+            
+            // Validate on blur
+            input.addEventListener('blur', function(e) {
+                const value = e.target.value;
+                if (value && value !== '') {
+                    if (!isValidDateFormat(value)) {
+                        e.target.style.borderColor = '#ef4444';
+                    } else {
+                        e.target.style.borderColor = '#22c55e';
+                    }
+                } else {
+                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            });
+        }
+        
+        // Show modern date picker
+        function showDatePicker(input, label) {
+            // Close any existing picker
+            closeDatePicker();
+            
+            // Create date picker container
+            const pickerContainer = document.createElement('div');
+            pickerContainer.id = 'datePickerContainer';
+            pickerContainer.className = 'fixed inset-0 z-[999999] flex items-center justify-center bg-black/50';
+            pickerContainer.onclick = closeDatePicker;
+            
+            // Create picker content
+            const pickerContent = document.createElement('div');
+            pickerContent.className = 'bg-slate-800 rounded-xl shadow-2xl border border-white/20 p-6 min-w-[320px]';
+            pickerContent.onclick = (e) => e.stopPropagation();
+            
+            // Get current date or input value
+            let currentDate = new Date();
+            if (input.value) {
+                try {
+                    const parts = input.value.split('/');
+                    if (parts.length === 3) {
+                        currentDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    }
+                } catch (e) {
+                    console.log('Could not parse current date');
+                }
+            }
+            
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth();
+            
+            // Create picker header
+            const header = document.createElement('div');
+            header.className = 'flex items-center justify-between mb-4';
+            header.innerHTML = `
+                <h3 class="text-lg font-semibold text-white">${label}</h3>
+                <button onclick="closeDatePicker()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            `;
+            
+            // Create month/year navigation
+            const navigation = document.createElement('div');
+            navigation.className = 'flex items-center justify-between mb-4';
+            navigation.innerHTML = `
+                <button onclick="changeMonth(-1)" class="p-2 text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="text-white font-medium" id="monthYearDisplay">
+                    ${getMonthName(currentMonth)} ${currentYear}
+                </span>
+                <button onclick="changeMonth(1)" class="p-2 text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            // Create calendar grid
+            const calendarGrid = document.createElement('div');
+            calendarGrid.className = 'grid grid-cols-7 gap-1 mb-4';
+            
+            // Add day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'p-2 text-center text-xs font-medium text-gray-400';
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+            
+            // Create calendar days
+            createCalendarDays(calendarGrid, currentYear, currentMonth);
+            
+            // Create quick actions
+            const quickActions = document.createElement('div');
+            quickActions.className = 'flex items-center justify-between pt-4 border-t border-white/10';
+            quickActions.innerHTML = `
+                <button onclick="setToday()" class="px-3 py-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                    Today
+                </button>
+                <button onclick="clearDate()" class="px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                    Clear
+                </button>
+            `;
+            
+            // Assemble picker
+            pickerContent.appendChild(header);
+            pickerContent.appendChild(navigation);
+            pickerContent.appendChild(calendarGrid);
+            pickerContent.appendChild(quickActions);
+            pickerContainer.appendChild(pickerContent);
+            
+            // Add to page
+            document.body.appendChild(pickerContainer);
+            
+            // Store current state
+            window.currentDatePicker = {
+                input: input,
+                year: currentYear,
+                month: currentMonth
+            };
+        }
+        
+        // Create calendar days
+        function createCalendarDays(container, year, month) {
+            container.innerHTML = '';
+            
+            // Add day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'p-2 text-center text-xs font-medium text-gray-400';
+                dayHeader.textContent = day;
+                container.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'p-2';
+                container.appendChild(emptyCell);
+            }
+            
+            // Add day cells
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'p-2 text-center text-white hover:bg-blue-500/20 rounded cursor-pointer transition-colors';
+                dayCell.textContent = day;
+                dayCell.onclick = () => selectDate(day);
+                container.appendChild(dayCell);
+            }
+        }
+        
+        // Change month
+        function changeMonth(delta) {
+            if (window.currentDatePicker) {
+                window.currentDatePicker.month += delta;
+                
+                // Handle year change
+                if (window.currentDatePicker.month > 11) {
+                    window.currentDatePicker.month = 0;
+                    window.currentDatePicker.year++;
+                } else if (window.currentDatePicker.month < 0) {
+                    window.currentDatePicker.month = 11;
+                    window.currentDatePicker.year--;
+                }
+                
+                // Update display
+                const monthYearDisplay = document.getElementById('monthYearDisplay');
+                if (monthYearDisplay) {
+                    monthYearDisplay.textContent = `${getMonthName(window.currentDatePicker.month)} ${window.currentDatePicker.year}`;
+                }
+                
+                // Recreate calendar
+                const calendarGrid = document.querySelector('#datePickerContainer .grid');
+                if (calendarGrid) {
+                    createCalendarDays(calendarGrid, window.currentDatePicker.year, window.currentDatePicker.month);
+                }
+            }
+        }
+        
+        // Select date
+        function selectDate(day) {
+            if (window.currentDatePicker) {
+                const { input, year, month } = window.currentDatePicker;
+                const selectedDate = new Date(year, month, day);
+                input.value = formatDate(selectedDate);
+                input.style.borderColor = '#22c55e';
+                updateActiveFiltersCount();
+                closeDatePicker();
+            }
+        }
+        
+        // Set today's date
+        function setToday() {
+            if (window.currentDatePicker) {
+                const today = new Date();
+                window.currentDatePicker.year = today.getFullYear();
+                window.currentDatePicker.month = today.getMonth();
+                selectDate(today.getDate());
+            }
+        }
+        
+        // Clear date
+        function clearDate() {
+            if (window.currentDatePicker) {
+                window.currentDatePicker.input.value = '';
+                window.currentDatePicker.input.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                updateActiveFiltersCount();
+                closeDatePicker();
+            }
+        }
+        
+        // Close date picker
+        function closeDatePicker() {
+            const picker = document.getElementById('datePickerContainer');
+            if (picker) {
+                picker.remove();
+            }
+            window.currentDatePicker = null;
+        }
+        
+        // Get month name
+        function getMonthName(month) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+            return months[month];
+        }
+        
+        // Validate date format YYYY/M/D
+        function isValidDateFormat(dateString) {
+            const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
+            if (!dateRegex.test(dateString)) {
+                return false;
+            }
+            
+            const parts = dateString.split('/');
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]);
+            const day = parseInt(parts[2]);
+            
+            // Check if date is valid
+            const date = new Date(year, month - 1, day);
+            return date.getFullYear() === year && 
+                   date.getMonth() === month - 1 && 
+                   date.getDate() === day;
+        }
+
+        // Initialize multi-select dropdowns
+        function initializeMultiDropdowns() {
+            const dropdownTypes = ['tpl', 'milestone', 'customer', 'bookingType', 'loadType', 'serviceLevel', 'origin', 'dest', 'bu'];
+            
+            dropdownTypes.forEach(type => {
+                populateMultiOptions(type);
+            });
+        }
+
+        // Simple and reliable dropdown toggle
+        function toggleMultiDropdown(type) {
+            closeAllMultiDropdowns();
+            const dropdown = document.getElementById(type + 'Dropdown');
+            const input = document.getElementById(type + 'Input');
+            
+            if (dropdown && input) {
+                dropdown.classList.toggle('hidden');
+                if (!dropdown.classList.contains('hidden')) {
+                    // Populate options when first shown
+                    populateMultiDropdown(type);
+                    
+                    // Simple approach: just show the dropdown, CSS handles positioning
+                    console.log(`Dropdown ${type} toggled and positioned by CSS`);
+                    
+                    // Debug: check positioning
+                    const dropdownRect = dropdown.getBoundingClientRect();
+                    const inputRect = input.getBoundingClientRect();
+                    console.log(`Input: top=${inputRect.top}, bottom=${inputRect.bottom}, width=${inputRect.width}`);
+                    console.log(`Dropdown: top=${dropdownRect.top}, left=${dropdownRect.left}, width=${dropdownRect.width}`);
+                }
+            }
+        }
+        
+
+
+        // Close all multi-select dropdowns
+        function closeAllMultiDropdowns() {
+            document.querySelectorAll('[id$="Dropdown"]').forEach(dropdown => {
+                dropdown.classList.add('hidden');
+            });
+        }
+
+        // Add global click listener to close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            // Check if click is outside any dropdown
+            const isDropdownClick = e.target.closest('[id$="Dropdown"]') || e.target.closest('[id$="Input"]');
+            if (!isDropdownClick) {
+                closeAllMultiDropdowns();
+            }
+        });
+        
+
+
+        // Populate multi-select options
+        function populateMultiOptions(type) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            if (!optionsContainer) return;
+
+            let uniqueValues = [];
+            let fieldName = '';
+
+            switch(type) {
+                case 'tpl':
+                    fieldName = '3PL';
+                    uniqueValues = ['FedEx', 'UPS', 'DHL', 'Emirates', 'Lufthansa', 'Qatar'];
+                    break;
+                case 'milestone':
+                    fieldName = 'Milestone';
+                    uniqueValues = ['Pickup Date', 'ATD', 'ATA', 'Delivery', 'Flight Departure', 'Flight Arrival'];
+                    break;
+                case 'customer':
+                    fieldName = 'Customer';
+                    uniqueValues = ['HHA', 'HHC', 'HHB', 'HHK'];
+                    break;
+                case 'bookingType':
+                    fieldName = 'Booking Type';
+                    uniqueValues = ['SOI', 'LOI'];
+                    break;
+                case 'loadType':
+                    fieldName = 'Load Type';
+                    uniqueValues = ['Direct', 'Consolidation', 'Express', 'Standard'];
+                    break;
+                case 'serviceLevel':
+                    fieldName = 'Service Level';
+                    uniqueValues = ['SL1', 'SL2', 'SL3'];
+                    break;
+                case 'origin':
+                    fieldName = 'Origin';
+                    uniqueValues = ['PVG', 'LAX', 'FRA', 'NRT', 'DXB', 'LHR'];
+                    break;
+                case 'dest':
+                    fieldName = 'Destination';
+                    uniqueValues = ['JFK', 'LHR', 'CDG', 'SIN', 'ORD', 'DXB'];
+                    break;
+                case 'bu':
+                    fieldName = 'BU';
+                    uniqueValues = ['APAC', 'EMEA', 'AMER'];
+                    break;
+                default:
+                    return;
+            }
+
+            // Clear existing options
+            optionsContainer.innerHTML = '';
+
+            // Add options without checkboxes but with click functionality
+            uniqueValues.forEach(value => {
+                const option = document.createElement('div');
+                option.className = 'p-3 hover:bg-white/10 rounded cursor-pointer transition-colors flex items-center justify-between';
+                
+                // Check if this option is already selected
+                const selectedValues = getSelectedValues(type);
+                if (selectedValues.includes(value)) {
+                    option.classList.add('bg-blue-500/20', 'text-blue-300');
+                } else {
+                    option.classList.add('text-white');
+                }
+                
+                // Create option content with delete button if selected
+                if (selectedValues.includes(value)) {
+                    option.innerHTML = `
+                        <span>${value}</span>
+                        <button onclick="removeSelectedValue('${type}', '${value}'); event.stopPropagation();" 
+                                class="ml-2 text-red-400 hover:text-red-300 transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                } else {
+                    option.textContent = value;
+                }
+                
+                // Add click event to toggle selection
+                option.onclick = () => {
+                    if (selectedValues.includes(value)) {
+                        removeSelectedValue(type, value);
+                        option.classList.remove('bg-blue-500/20', 'text-blue-300');
+                        option.classList.add('text-white');
+                        option.innerHTML = value;
+                    } else {
+                        addSelectedValue(type, value);
+                        option.classList.add('bg-blue-500/20', 'text-blue-300');
+                        option.classList.remove('text-white');
+                        option.innerHTML = `
+                            <span>${value}</span>
+                            <button onclick="removeSelectedValue('${type}', '${value}'); event.stopPropagation();" 
+                                    class="ml-2 text-red-400 hover:text-red-300 transition-colors">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    }
+                    updateInputDisplay(type);
+                    updateActiveFiltersCount();
+                };
+                
+                optionsContainer.appendChild(option);
+            });
+        }
+
+                // Filter multi-select options
+        function filterMultiOptions(type, searchText) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            if (!optionsContainer) return;
+
+            let uniqueValues = [];
+            switch(type) {
+                case 'tpl':
+                    uniqueValues = ['FedEx', 'UPS', 'DHL', 'Emirates', 'Lufthansa', 'Qatar'];
+                    break;
+                case 'milestone':
+                    uniqueValues = ['Pickup Date', 'ATD', 'ATA', 'Delivery', 'Flight Departure', 'Flight Arrival'];
+                    break;
+                case 'customer':
+                    uniqueValues = ['HHA', 'HHC', 'HHB', 'HHK'];
+                    break;
+                case 'bookingType':
+                    uniqueValues = ['Direct', 'Consolidation'];
+                    break;
+                case 'loadType':
+                    uniqueValues = ['Direct', 'Consolidation', 'Express', 'Standard'];
+                    break;
+                case 'serviceLevel':
+                    uniqueValues = ['Premium', 'Express', 'Standard'];
+                    break;
+                case 'origin':
+                    uniqueValues = ['PVG', 'LAX', 'FRA', 'NRT', 'DXB', 'LHR'];
+                    break;
+                case 'dest':
+                    uniqueValues = ['JFK', 'LHR', 'CDG', 'SIN', 'ORD', 'DXB'];
+                    break;
+                case 'bu':
+                    uniqueValues = ['APAC', 'EMEA', 'AMER'];
+                    break;
+                default:
+                    return;
+            }
+
+            // Filter based on search text
+            if (searchText.trim() !== '') {
+                const searchLower = searchText.toLowerCase();
+                uniqueValues = uniqueValues.filter(value => 
+                    value.toLowerCase().includes(searchLower)
+                );
+            }
+
+            // Clear existing options
+            optionsContainer.innerHTML = '';
+
+            // Add filtered options without checkboxes
+            uniqueValues.forEach(value => {
+                const option = document.createElement('div');
+                option.className = 'p-3 hover:bg-white/10 rounded cursor-pointer transition-colors flex items-center justify-between';
+                
+                // Check if this option is already selected
+                const selectedValues = getSelectedValues(type);
+                if (selectedValues.includes(value)) {
+                    option.classList.add('bg-blue-500/20', 'text-blue-300');
+                } else {
+                    option.classList.add('text-white');
+                }
+                
+                // Highlight matching text and add delete button if selected
+                if (searchText.trim() !== '') {
+                    const searchLower = searchText.toLowerCase();
+                    const valueLower = value.toLowerCase();
+                    if (valueLower.includes(searchLower)) {
+                        const matchIndex = valueLower.indexOf(searchLower);
+                        const matchLength = searchText.length;
+                        const highlightedText = `${value.substring(0, matchIndex)}<span class="text-blue-400 font-semibold">${value.substring(matchIndex, matchIndex + matchLength)}</span>${value.substring(matchIndex + matchLength)}`;
+                        
+                        if (selectedValues.includes(value)) {
+                            option.innerHTML = `
+                                <span>${highlightedText}</span>
+                                <button onclick="removeSelectedValue('${type}', '${value}'); event.stopPropagation();" 
+                                        class="ml-2 text-red-400 hover:text-red-300 transition-colors">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                        } else {
+                            option.innerHTML = highlightedText;
+                        }
+                    } else {
+                        if (selectedValues.includes(value)) {
+                            option.innerHTML = `
+                                <span>${value}</span>
+                                <button onclick="removeSelectedValue('${type}', '${value}'); event.stopPropagation();" 
+                                        class="ml-2 text-red-400 hover:text-red-300 transition-colors">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                    } else {
+                        option.textContent = value;
+                        }
+                    }
+                } else {
+                    if (selectedValues.includes(value)) {
+                        option.innerHTML = `
+                            <span>${value}</span>
+                            <button onclick="removeSelectedValue('${type}', '${value}'); event.stopPropagation();" 
+                                    class="ml-2 text-red-400 hover:text-red-300 transition-colors">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                } else {
+                    option.textContent = value;
+                    }
+                }
+                
+                // Add click event to toggle selection
+                option.onclick = () => {
+                    if (selectedValues.includes(value)) {
+                        removeSelectedValue(type, value);
+                        option.classList.remove('bg-blue-500/20', 'text-blue-300');
+                        option.classList.add('text-white');
+                        // Re-render the option to update delete button
+                        populateMultiOptions(type);
+                    } else {
+                        addSelectedValue(type, value);
+                        option.classList.add('bg-blue-500/20', 'text-blue-300');
+                        option.classList.remove('text-white');
+                        // Re-render the option to update delete button
+                        populateMultiOptions(type);
+                    }
+                    updateInputDisplay(type);
+                    updateActiveFiltersCount();
+                };
+                
+                optionsContainer.appendChild(option);
+            });
+        }
+
+
+
+        // Select all options for a field
+        function selectAllOptions(type) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            if (!optionsContainer) return;
+
+            const options = optionsContainer.querySelectorAll('div');
+            options.forEach(option => {
+                const value = option.textContent || option.innerText;
+                if (value && !getSelectedValues(type).includes(value)) {
+                    addSelectedValue(type, value);
+                    option.classList.add('bg-blue-500/20', 'text-blue-300');
+                    option.classList.remove('text-white');
+                }
+            });
+            updateInputDisplay(type);
+            updateActiveFiltersCount();
+        }
+
+        // Get selected values for a field
+        function getSelectedValues(type) {
+            const input = document.getElementById(type + 'Input');
+            if (input && input.dataset.selectedValues) {
+                return JSON.parse(input.dataset.selectedValues);
+            }
+            return [];
+        }
+
+        // Add selected value
+        function addSelectedValue(type, value) {
+            const input = document.getElementById(type + 'Input');
+            if (input) {
+                const selectedValues = getSelectedValues(type);
+                if (!selectedValues.includes(value)) {
+                    selectedValues.push(value);
+                    input.dataset.selectedValues = JSON.stringify(selectedValues);
+                }
+            }
+        }
+
+        // Remove selected value
+        function removeSelectedValue(type, value) {
+            const input = document.getElementById(type + 'Input');
+            if (input) {
+                const selectedValues = getSelectedValues(type);
+                const index = selectedValues.indexOf(value);
+                if (index > -1) {
+                    selectedValues.splice(index, 1);
+                    input.dataset.selectedValues = JSON.stringify(selectedValues);
+                    
+                    // Update display and active filters count
+                    updateInputDisplay(type);
+                    updateActiveFiltersCount();
+                    
+                    // Re-render dropdown options to update delete buttons
+                    const dropdown = document.getElementById(type + 'Dropdown');
+                    if (dropdown && !dropdown.classList.contains('hidden')) {
+                        populateMultiOptions(type);
+                    }
+                }
+            }
+        }
+
+        // Update input display for multi-select
+        function updateInputDisplay(type) {
+            const input = document.getElementById(type + 'Input');
+            if (!input) return;
+            
+            const selectedValues = getSelectedValues(type);
+            
+            if (selectedValues.length === 0) {
+                input.innerHTML = '<span class="text-gray-400">Select ' + getFieldDisplayName(type) + '...</span>';
+            } else {
+                // Show selected values as tags with delete buttons
+                const maxVisible = 2;
+                const visibleValues = selectedValues.slice(0, maxVisible);
+                const hiddenCount = selectedValues.length - maxVisible;
+                
+                let displayHTML = '';
+                visibleValues.forEach(value => {
+                    displayHTML += `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30 mr-2">
+                        ${value}
+                        <button onclick="removeSelectedValue('${type}', '${value}'); event.stopPropagation();" 
+                                class="ml-1 text-red-400 hover:text-red-300 transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>`;
+                });
+                
+                if (hiddenCount > 0) {
+                    displayHTML += `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 border border-gray-500/30">+${hiddenCount}</span>`;
+                }
+                
+                input.innerHTML = displayHTML;
+            }
+        }
+
+        // Get field display name
+        function getFieldDisplayName(type) {
+            const names = {
+                'tpl': '3PL',
+                'milestone': 'Milestone',
+                'customer': 'Customer',
+                'bookingType': 'Booking Type',
+                'loadType': 'Load Type',
+                'serviceLevel': 'Service Level',
+                'origin': 'Origin',
+                'dest': 'Destination',
+                'bu': 'BU'
+            };
+            return names[type] || type;
+        }
+
+        // Update active filters count
+        function updateActiveFiltersCount() {
+            let count = 0;
+            
+            // Count date filters
+            const bookingStartDate = document.getElementById('bookingStartDate');
+            const bookingEndDate = document.getElementById('bookingEndDate');
+            const eventStartDate = document.getElementById('eventStartDate');
+            const eventEndDate = document.getElementById('eventEndDate');
+            
+            if (bookingStartDate && (bookingStartDate.value || bookingEndDate.value)) count++;
+            if (eventStartDate && (eventStartDate.value || eventEndDate.value)) count++;
+            
+            // Count multi-select filters
+            const dropdownTypes = ['tpl', 'milestone', 'customer', 'bookingType', 'loadType', 'serviceLevel', 'origin', 'dest', 'bu'];
+            dropdownTypes.forEach(type => {
+                if (getSelectedValues(type).length > 0) count++;
+            });
+            
+            console.log('Active filters count:', count);
+            // Note: activeFiltersCount element was removed, so we just log the count
+        }
+
+        // Load sample data with pagination support
+        function loadSampleData() {
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = '';
+            
+            // Use the correct data source (filtered or all data)
+            const dataToDisplay = window.filteredData && window.filteredData.length > 0 ? window.filteredData : filteredData;
+            
+            // Calculate start and end indices for current page
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = Math.min(startIndex + recordsPerPage, dataToDisplay.length);
+            
+            // Display data for current page
+            for (let i = startIndex; i < endIndex; i++) {
+                const item = dataToDisplay[i];
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-white/5 transition-colors';
+                tr.innerHTML = `
+                    <td class="px-4 py-3 text-sm text-white">${item.bookingNo}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.hbl}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.mbl}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.bookingDate}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.bookingType}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.tpl}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.loadType}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.customer}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.shipper}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.pickupCountry}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.pickupCity}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.consignee}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.consigneeCountry}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.consigneeCity}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.incoterm}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.serviceLevel}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.bu}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.origin}</td>
+                    <td class="px-4 py-3 text-gray-300">${item.destination}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.milestone}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.eventTimeLocal}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.eventTimeUTC}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.receivedTimeUTC}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${item.gap}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+            
+            // Update pagination info
+            updatePaginationInfo(dataToDisplay.length, recordsPerPage);
+            
+            // Update pagination button states
+            updatePaginationButtons();
+        }
+
+        // Toggle search form
+        document.getElementById('toggleSearch').addEventListener('click', function() {
+            const additionalCriteria = document.getElementById('additionalCriteria');
+            const button = this;
+            
+            if (additionalCriteria.classList.contains('hidden')) {
+                additionalCriteria.classList.remove('hidden');
+                button.innerHTML = '<i class="fas fa-chevron-up mr-2 transition-transform duration-200 group-hover:scale-110"></i><span>Show Less</span>';
+            } else {
+                additionalCriteria.classList.add('hidden');
+                button.innerHTML = '<i class="fas fa-chevron-down mr-2 transition-transform duration-200 group-hover:scale-110"></i><span>Show More</span>';
+            }
+        });
+
+        // Submenu toggle functionality
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const arrow = document.getElementById(menuId + '-arrow');
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.relative')) {
+                closeAllMultiDropdowns();
+            }
+        });
+
+
+
+        // Perform search function
+        function performSearch() {
+            console.log('Search function called');
+            
+            // Reset to first page when searching
+            currentPage = 1;
+            
+            // Get all search criteria values
+            const bookingStartDate = document.getElementById('bookingStartDate').value;
+            const bookingEndDate = document.getElementById('bookingEndDate').value;
+            const eventStartDate = document.getElementById('eventStartDate').value;
+            const eventEndDate = document.getElementById('eventEndDate').value;
+            
+            const tplValues = getSelectedValues('tpl');
+            const milestoneValues = getSelectedValues('milestone');
+            const customerValues = getSelectedValues('customer');
+            const bookingTypeValues = getSelectedValues('bookingType');
+            const loadTypeValues = getSelectedValues('loadType');
+            const serviceLevelValues = getSelectedValues('serviceLevel');
+            const originValues = getSelectedValues('origin');
+            const destValues = getSelectedValues('dest');
+            const buValues = getSelectedValues('bu');
+
+            console.log('Search criteria values retrieved:', {
+                bookingStartDate,
+                bookingEndDate,
+                eventStartDate,
+                eventEndDate,
+                tplValues,
+                milestoneValues,
+                customerValues,
+                bookingTypeValues,
+                loadTypeValues,
+                serviceLevelValues,
+                originValues,
+                destValues,
+                buValues
+            });
+
+            // Show search criteria in console for debugging
+            console.log('Search Criteria:', {
+                bookingDate: { start: bookingStartDate, end: bookingEndDate },
+                eventTime: { start: eventStartDate, end: eventEndDate },
+                tpl: tplValues,
+                milestone: milestoneValues,
+                customer: customerValues,
+                bookingType: bookingTypeValues,
+                loadType: loadTypeValues,
+                serviceLevel: serviceLevelValues,
+                origin: originValues,
+                destination: destValues,
+                bu: buValues
+            });
+
+            // Perform actual search filtering
+            console.log('Starting data filtering...');
+            const filteredData = filterDataByCriteria({
+                bookingStartDate,
+                bookingEndDate,
+                eventStartDate,
+                eventEndDate,
+                tplValues,
+                milestoneValues,
+                customerValues,
+                bookingTypeValues,
+                loadTypeValues,
+                serviceLevelValues,
+                originValues,
+                destValues,
+                buValues
+            });
+
+            console.log('Filtered data result:', filteredData);
+
+            // Update table with filtered results
+            console.log('Updating table with filtered data...');
+            updateTableWithFilteredData(filteredData);
+            
+            // Show search results notification
+            const resultCount = filteredData.length;
+            console.log('Showing notification for', resultCount, 'results');
+            showNotification(`Search completed! Found ${resultCount} matching records.`, 'success');
+            
+            console.log('Search function completed successfully');
+        }
+
+        // Filter data based on search criteria
+        function filterDataByCriteria(criteria) {
+            // Get all sample data
+            const allData = getAllSampleData();
+            let filteredData = [...allData];
+
+            console.log('Initial data count:', allData.length);
+            console.log('Filtering criteria:', criteria);
+
+            // Filter by Booking Date
+            if (criteria.bookingStartDate || criteria.bookingEndDate) {
+                console.log('Filtering by Booking Date:', { start: criteria.bookingStartDate, end: criteria.bookingEndDate });
+                filteredData = filteredData.filter(item => {
+                    // Parse item date (format: "2025/8/20")
+                    const itemDateParts = item.bookingDate.split('/');
+                    const itemDate = new Date(parseInt(itemDateParts[0]), parseInt(itemDateParts[1]) - 1, parseInt(itemDateParts[2]));
+                    
+                    // Parse search criteria dates (format: "2025/8/20")
+                    const startDate = criteria.bookingStartDate ? (() => {
+                        const parts = criteria.bookingStartDate.split('/');
+                        return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    })() : null;
+                    
+                    const endDate = criteria.bookingEndDate ? (() => {
+                        const parts = criteria.bookingEndDate.split('/');
+                        return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    })() : null;
+                    
+                    if (startDate && endDate) {
+                        return itemDate >= startDate && itemDate <= endDate;
+                    } else if (startDate) {
+                        return itemDate >= startDate;
+                    } else if (endDate) {
+                        return itemDate <= endDate;
+                    }
+                    return true;
+                });
+                console.log('After Booking Date filter:', filteredData.length);
+            }
+
+            // Filter by Event Time (Local)
+            if (criteria.eventStartDate || criteria.eventEndDate) {
+                console.log('Filtering by Event Time:', { start: criteria.eventStartDate, end: criteria.eventEndDate });
+                filteredData = filteredData.filter(item => {
+                    // Parse item date (format: "2025/8/20 12:00")
+                    const itemDateStr = item.eventTimeLocal.split(' ')[0]; // Get date part only
+                    const itemDateParts = itemDateStr.split('/');
+                    const itemDate = new Date(parseInt(itemDateParts[0]), parseInt(itemDateParts[1]) - 1, parseInt(itemDateParts[2]));
+                    
+                    // Parse search criteria dates (format: "2025/8/20")
+                    const startDate = criteria.eventStartDate ? (() => {
+                        const parts = criteria.eventStartDate.split('/');
+                        return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    })() : null;
+                    
+                    const endDate = criteria.eventEndDate ? (() => {
+                        const parts = criteria.eventEndDate.split('/');
+                        return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    })() : null;
+                    
+                    if (startDate && endDate) {
+                        return itemDate >= startDate && itemDate <= endDate;
+                    } else if (startDate) {
+                        return itemDate >= startDate;
+                    } else if (endDate) {
+                        return itemDate <= endDate;
+                    }
+                    return true;
+                });
+                console.log('After Event Time filter:', filteredData.length);
+            }
+
+            // Filter by multi-select values
+            if (criteria.tplValues && criteria.tplValues.length > 0) {
+                console.log('Filtering by 3PL:', criteria.tplValues);
+                filteredData = filteredData.filter(item => criteria.tplValues.includes(item.tpl));
+                console.log('After 3PL filter:', filteredData.length);
+            }
+            if (criteria.milestoneValues && criteria.milestoneValues.length > 0) {
+                console.log('Filtering by Milestone:', criteria.milestoneValues);
+                filteredData = filteredData.filter(item => criteria.milestoneValues.includes(item.milestone));
+                console.log('After Milestone filter:', filteredData.length);
+            }
+            if (criteria.customerValues && criteria.customerValues.length > 0) {
+                console.log('Filtering by Customer:', criteria.customerValues);
+                filteredData = filteredData.filter(item => criteria.customerValues.includes(item.customer));
+                console.log('After Customer filter:', filteredData.length);
+            }
+            if (criteria.bookingTypeValues && criteria.bookingTypeValues.length > 0) {
+                console.log('Filtering by Booking Type:', criteria.bookingTypeValues);
+                filteredData = filteredData.filter(item => criteria.bookingTypeValues.includes(item.bookingType));
+                console.log('After Booking Type filter:', filteredData.length);
+            }
+            if (criteria.loadTypeValues && criteria.loadTypeValues.length > 0) {
+                console.log('Filtering by Load Type:', criteria.loadTypeValues);
+                filteredData = filteredData.filter(item => criteria.loadTypeValues.includes(item.loadType));
+                console.log('After Load Type filter:', filteredData.length);
+            }
+            if (criteria.serviceLevelValues && criteria.serviceLevelValues.length > 0) {
+                console.log('Filtering by Service Level:', criteria.serviceLevelValues);
+                filteredData = filteredData.filter(item => criteria.serviceLevelValues.includes(item.serviceLevel));
+                console.log('After Service Level filter:', filteredData.length);
+            }
+            if (criteria.originValues && criteria.originValues.length > 0) {
+                console.log('Filtering by Origin:', criteria.originValues);
+                filteredData = filteredData.filter(item => criteria.originValues.includes(item.origin));
+                console.log('After Origin filter:', filteredData.length);
+            }
+            if (criteria.destValues && criteria.destValues.length > 0) {
+                console.log('Filtering by Destination:', criteria.destValues);
+                filteredData = filteredData.filter(item => criteria.destValues.includes(item.destination));
+                console.log('After Destination filter:', filteredData.length);
+            }
+            if (criteria.buValues && criteria.buValues.length > 0) {
+                console.log('Filtering by BU:', criteria.buValues);
+                filteredData = filteredData.filter(item => criteria.buValues.includes(item.bu));
+                console.log('After BU filter:', filteredData.length);
+            }
+
+            console.log('Final filtered data count:', filteredData.length);
+            return filteredData;
+        }
+
+        // Get all sample data
+        function getAllSampleData() {
+            const allData = [];
+            
+            // Generate sample data for 100 records
+            for (let i = 1; i <= 100; i++) {
+                // Generate random date between Aug 1-30, 2025
+                const day = (i % 30) + 1; // 1-30
+                const hour = (i % 24); // 0-23
+                const minute = (i % 60); // 0-59
+                
+                // Format: 2025/8/20 12:00
+                const bookingDate = `2025/8/${day}`;
+                const eventTimeLocal = `2025/8/${day} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                const eventTimeUTC = `2025/8/${day} ${((hour + 16) % 24).toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                const receivedTimeUTC = `2025/8/${day} ${((hour + 16) % 24).toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                
+                allData.push({
+                    bookingNo: `AB${i.toString().padStart(3, '0')}`,
+                    hbl: `HAWB${i.toString().padStart(3, '0')}`,
+                    mbl: `MAWB${i.toString().padStart(3, '0')}`,
+                    bookingDate: bookingDate,
+                    bookingType: i % 2 === 0 ? 'Direct' : 'Consolidation',
+                    tpl: ['FedEx', 'UPS', 'DHL', 'Emirates', 'Lufthansa', 'Qatar'][i % 6],
+                    loadType: ['Direct', 'Consolidation', 'Express', 'Standard'][i % 4],
+                    customer: ['HHA', 'HHC', 'HHB', 'HHK'][i % 4],
+                    shipper: `Shipper ${i}`,
+                    pickupCountry: ['China', 'USA', 'Germany', 'Japan', 'UAE', 'UK'][i % 6],
+                    pickupCity: ['Shanghai', 'Los Angeles', 'Frankfurt', 'Tokyo', 'Dubai', 'London'][i % 6],
+                    consignee: `Consignee ${i}`,
+                    consigneeCountry: ['USA', 'UK', 'France', 'Singapore', 'Germany', 'UAE'][i % 6],
+                    consigneeCity: ['New York', 'London', 'Paris', 'Singapore', 'Frankfurt', 'Dubai'][i % 6],
+                    incoterm: ['DAP', 'DDP', 'FOB', 'CIF'][i % 4],
+                    serviceLevel: ['Premium', 'Express', 'Standard'][i % 3],
+                    bu: ['APAC', 'EMEA', 'AMER'][i % 3],
+                    origin: ['PVG', 'LAX', 'FRA', 'NRT', 'DXB', 'LHR'][i % 6],
+                    destination: ['JFK', 'LHR', 'CDG', 'SIN', 'ORD', 'DXB'][i % 6],
+                    milestone: ['Pickup Date', 'ATD', 'ATA', 'Delivery', 'Flight Departure', 'Flight Arrival'][i % 6],
+                    eventTimeLocal: eventTimeLocal,
+                    eventTimeUTC: eventTimeUTC,
+                    receivedTimeUTC: receivedTimeUTC,
+                    gap: (i % 60).toString()
+                });
+            }
+            
+            return allData;
+        }
+
+        // Update table with filtered data
+        function updateTableWithFilteredData(filteredData) {
+            // Update global filtered data
+            window.filteredData = filteredData;
+            
+            // Reset to first page when filtering
+            currentPage = 1;
+            
+            // Load the filtered data
+            loadSampleData();
+            
+            // Show search notification
+            showNotification(`Search completed! Found ${filteredData.length} results.`, 'success');
+        }
+
+        // Update pagination info
+        function updatePaginationInfo(totalRecords, recordsPerPage) {
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            const startRecord = (currentPage - 1) * recordsPerPage + 1;
+            const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
+            
+            document.getElementById('totalRecords').textContent = totalRecords;
+            document.getElementById('currentPage').textContent = currentPage;
+            document.getElementById('totalPages').textContent = totalPages;
+            document.getElementById('startRecord').textContent = startRecord;
+            document.getElementById('endRecord').textContent = endRecord;
+        }
+        
+        // Update pagination button states
+        function updatePaginationButtons() {
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const dataToDisplay = window.filteredData && window.filteredData.length > 0 ? window.filteredData : filteredData;
+            const totalPages = Math.ceil(dataToDisplay.length / recordsPerPage);
+            
+            // Previous button state
+            if (currentPage <= 1) {
+                prevBtn.disabled = true;
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                prevBtn.disabled = false;
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            // Next button state
+            if (currentPage >= totalPages) {
+                nextBtn.disabled = true;
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+        
+        // Go to previous page
+        function goToPreviousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadSampleData();
+                console.log(`Navigated to page ${currentPage}`);
+            }
+        }
+        
+        // Go to next page
+        function goToNextPage() {
+            const dataToDisplay = window.filteredData && window.filteredData.length > 0 ? window.filteredData : filteredData;
+            const totalPages = Math.ceil(dataToDisplay.length / recordsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadSampleData();
+                console.log(`Navigated to page ${currentPage}`);
+            }
+        }
+
+        // Reset search function
+        function resetSearch() {
+            console.log('Reset function called');
+            
+            // Reset date inputs
+            const bookingStartDate = document.getElementById('bookingStartDate');
+            const bookingEndDate = document.getElementById('bookingEndDate');
+            const eventStartDate = document.getElementById('eventStartDate');
+            const eventEndDate = document.getElementById('eventEndDate');
+            
+            if (bookingStartDate) {
+                bookingStartDate.value = '';
+                console.log('Booking Start Date reset');
+            }
+            if (bookingEndDate) {
+                bookingEndDate.value = '';
+                console.log('Booking End Date reset');
+            }
+            
+            // Reset Event Time to default (30 days ago to today)
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+            if (eventStartDate) {
+                eventStartDate.value = formatDate(thirtyDaysAgo);
+                console.log('Event Start Date reset to:', eventStartDate.value);
+            }
+            if (eventEndDate) {
+                eventEndDate.value = formatDate(today);
+                console.log('Event End Date reset to:', eventEndDate.value);
+            }
+            
+            // Reset all multi-select inputs
+            const dropdownTypes = ['tpl', 'milestone', 'customer', 'bookingType', 'loadType', 'serviceLevel', 'origin', 'dest', 'bu'];
+            dropdownTypes.forEach(type => {
+                const input = document.getElementById(type + 'Input');
+                if (input) {
+                    input.dataset.selectedValues = '[]';
+                    updateInputDisplay(type);
+                    console.log(`${type} input reset`);
+                }
+            });
+            
+            // Close all dropdowns
+            closeAllMultiDropdowns();
+            
+            // Update active filters count
+            updateActiveFiltersCount();
+            
+            // Reset to first page and reload original data
+            currentPage = 1;
+            filteredData = [...allData];
+            loadSampleData();
+            
+            // Show reset notification
+            showNotification('Search criteria cleared and reset successfully!', 'info');
+            
+            console.log('Reset function completed');
+        }
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+            
+            // Set colors based on type
+            switch(type) {
+                case 'success':
+                    notification.className += ' bg-green-600 text-white';
+                    break;
+                case 'error':
+                    notification.className += ' bg-red-600 text-white';
+                    break;
+                case 'warning':
+                    notification.className += ' bg-yellow-600 text-white';
+                    break;
+                default:
+                    notification.className += ' bg-blue-600 text-white';
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Detail - Supply Chain Control Tower Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
+    <div class="relative z-10 flex h-screen">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 bg-white/10 backdrop-blur-lg border-r border-white/20 flex flex-col">
+            <!-- Logo and Title -->
+            <div class="p-6 border-b border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tower-broadcast text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Supply Chain</h1>
+                        <p class="text-xs text-gray-400">Control Tower</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="font-medium">Home</span>
+                </a>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('dashboard')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-line text-lg"></i>
+                            <span class="font-medium">Dashboard</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="dashboard-arrow"></i>
+                    </button>
+                    <div id="dashboard-submenu" class="hidden pl-8 space-y-1">
+                        <a href="operations-dashboard.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Operations Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('reports')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-file-alt text-lg"></i>
+                            <span class="font-medium">Operations Report</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="reports-arrow"></i>
+                    </button>
+                    <div id="reports-submenu" class="hidden pl-8 space-y-1">
+                        <a href="ocean-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Ocean Booking Report
+                        </a>
+                        <a href="air-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Air Booking Report
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 bg-blue-600/20 border border-blue-500/30 rounded-lg text-blue-300 transition-all" onclick="toggleSubmenu('system')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-cog text-lg"></i>
+                            <span class="font-medium">System</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="system-arrow"></i>
+                    </button>
+                    <div id="system-submenu" class="pl-8 space-y-1">
+                        <a href="user-management.html" class="block px-4 py-2 text-sm text-blue-300 bg-blue-600/20 rounded transition-all">
+                            User Management
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('basic')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-database text-lg"></i>
+                            <span class="font-medium">Basic Data</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="basic-arrow"></i>
+                    </button>
+                    <div id="basic-submenu" class="hidden pl-8 space-y-1">
+                        <a href="timezone-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Time Zone
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="p-4 border-t border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-white">admin</p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-1 bg-red-600/20 border border-red-500/30 text-red-300 rounded-lg hover:bg-red-600/30 transition-all text-sm">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="bg-white/10 backdrop-blur-lg border-b border-white/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="goBack()" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white" id="pageTitle">User Detail</h2>
+                            <p class="text-gray-400" id="pageSubtitle">View and manage user information</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Header actions removed as requested -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-auto">
+                <!-- User Information Form -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+                        <form id="userForm" class="space-y-6">
+                            <!-- IT Code -->
+                            <div>
+                                <label for="itCode" class="block text-sm font-medium text-gray-300 mb-2">IT Code *</label>
+                                <input type="text" id="itCode" name="itCode" required
+                                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Enter IT Code">
+                            </div>
+
+                            <!-- User Name -->
+                            <div>
+                                <label for="userName" class="block text-sm font-medium text-gray-300 mb-2">User Name *</label>
+                                <input type="text" id="userName" name="userName" required
+                                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Enter user name">
+                            </div>
+
+                                                         <!-- Email -->
+                             <div>
+                                 <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+                                 <input type="email" id="email" name="email" required
+                                        class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter email address">
+                             </div>
+ 
+                             <!-- Password Fields (Only for new user mode) -->
+                             <div id="passwordFields" class="hidden">
+                                                                   <!-- Password -->
+                                  <div>
+                                      <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password *</label>
+                                      <div class="relative">
+                                          <input type="password" id="password" name="password" required
+                                                 class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                                                 placeholder="Enter password" oninput="checkPasswordStrength()">
+                                          <button type="button" onclick="togglePasswordVisibility('password')" 
+                                                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                              <i class="fas fa-eye" id="passwordEye"></i>
+                                          </button>
+                                      </div>
+                                      
+                                      <!-- Password Strength Indicator -->
+                                      <div class="mt-2">
+                                          <div class="flex items-center space-x-2 mb-2">
+                                              <span class="text-xs text-gray-400">Password strength:</span>
+                                              <div class="flex space-x-1">
+                                                  <div id="strength1" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                                  <div id="strength2" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                                  <div id="strength3" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                                  <div id="strength4" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                                  <div id="strength5" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                              </div>
+                                              <span id="strengthText" class="text-xs text-gray-400">Weak</span>
+                                          </div>
+                                          
+                                          <!-- Password Requirements Checklist -->
+                                          <div class="space-y-1">
+                                              <div class="flex items-center space-x-2">
+                                                  <i id="lengthCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                                  <span class="text-xs text-gray-400">At least 8 characters</span>
+                                              </div>
+                                              <div class="flex items-center space-x-2">
+                                                  <i id="uppercaseCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                                  <span class="text-xs text-gray-400">Contains uppercase letters (A-Z)</span>
+                                              </div>
+                                              <div class="flex items-center space-x-2">
+                                                  <i id="lowercaseCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                                  <span class="text-xs text-gray-400">Contains lowercase letters (a-z)</span>
+                                              </div>
+                                              <div class="flex items-center space-x-2">
+                                                  <i id="numberCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                                  <span class="text-xs text-gray-400">Contains numbers (0-9)</span>
+                                              </div>
+                                              <div class="flex items-center space-x-2">
+                                                  <i id="specialCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                                  <span class="text-xs text-gray-400">Contains special characters (!@#$%^&*)</span>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+ 
+                                                                   <!-- Confirm Password -->
+                                  <div>
+                                      <label for="confirmPassword" class="block text-sm font-medium text-gray-300 mb-2">Confirm Password *</label>
+                                      <div class="relative">
+                                          <input type="password" id="confirmPassword" name="confirmPassword" required
+                                                 class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                                                 placeholder="Confirm password" oninput="checkPasswordMatch()">
+                                          <button type="button" onclick="togglePasswordVisibility('confirmPassword')" 
+                                                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                              <i class="fas fa-eye" id="confirmPasswordEye"></i>
+                                          </button>
+                                      </div>
+                                      
+                                      <!-- Password Match Indicator -->
+                                      <div class="mt-2">
+                                          <div class="flex items-center space-x-2">
+                                              <i id="matchIcon" class="fas fa-circle text-xs text-gray-500"></i>
+                                              <span id="matchText" class="text-xs text-gray-400">Passwords do not match</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                             </div>
+ 
+                             <!-- Status and Role Row -->
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                 <!-- Is Active -->
+                                 <div>
+                                     <label class="flex items-center space-x-3">
+                                         <input type="checkbox" id="isActive" name="isActive" 
+                                                class="w-4 h-4 text-blue-600 bg-white/5 border border-white/20 rounded focus:ring-blue-500 focus:ring-2">
+                                         <span class="text-sm font-medium text-gray-300">Is Active</span>
+                                     </label>
+                                     <p class="text-xs text-gray-400 mt-1">Enable or disable user account</p>
+                                 </div>
+ 
+                                 <!-- User Role -->
+                                 <div>
+                                     <label class="block text-sm font-medium text-gray-300 mb-2">User Role *</label>
+                                     <div class="space-y-2">
+                                         <label class="flex items-center space-x-3">
+                                             <input type="radio" name="userRole" value="user" 
+                                                    class="w-4 h-4 text-blue-600 bg-white/5 border border-white/20 focus:ring-blue-500 focus:ring-2">
+                                             <span class="text-sm text-gray-300">General User</span>
+                                         </label>
+                                         <label class="flex items-center space-x-3">
+                                             <input type="radio" name="userRole" value="admin" 
+                                                    class="w-4 h-4 text-blue-600 bg-white/5 border border-white/20 focus:ring-blue-500 focus:ring-2">
+                                             <span class="text-sm text-gray-300">Administrator</span>
+                                         </label>
+                                     </div>
+                                 </div>
+                             </div>
+ 
+                             <!-- Action Buttons -->
+                             <div class="flex items-center justify-end pt-6 border-t border-white/20">
+                                 <div class="flex items-center space-x-3">
+                                     <!-- Reset Password Button (only show in edit mode) -->
+                                     <button type="button" id="resetPasswordBtn" onclick="openPasswordModal()" 
+                                             class="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-medium rounded-lg hover:from-orange-700 hover:to-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                                         <i class="fas fa-key mr-2"></i>Reset Password
+                                     </button>
+                                     <button type="button" onclick="goBack()" 
+                                             class="px-6 py-3 bg-white/10 border border-white/20 text-white font-medium rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                                         Cancel
+                                     </button>
+                                     <button type="submit" id="saveBtn" 
+                                             class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200">
+                                         <i class="fas fa-save mr-2"></i>Save
+                                     </button>
+                                 </div>
+                             </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+        <!-- Password Reset Modal -->
+    <div id="passwordResetModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full max-w-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-white">Reset Password</h3>
+                    <button onclick="closePasswordModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="passwordResetForm" class="space-y-4">
+                    <div>
+                        <label for="resetNewPassword" class="block text-sm font-medium text-gray-300 mb-2">New Password *</label>
+                        <div class="relative">
+                            <input type="password" id="resetNewPassword" name="resetNewPassword" required
+                                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                                   placeholder="Enter new password" oninput="checkResetPasswordStrength()">
+                            <button type="button" onclick="togglePasswordVisibility('resetNewPassword')" 
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                <i class="fas fa-eye" id="resetNewPasswordEye"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Password Strength Indicator -->
+                        <div class="mt-2">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-xs text-gray-400">Password strength:</span>
+                                <div class="flex space-x-1">
+                                    <div id="resetStrength1" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                    <div id="resetStrength2" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                    <div id="resetStrength3" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                    <div id="resetStrength4" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                    <div id="resetStrength5" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                                </div>
+                                <span id="resetStrengthText" class="text-xs text-gray-400">Weak</span>
+                            </div>
+                            <!-- Password Requirements Checklist -->
+                            <div class="space-y-1">
+                                <div class="flex items-center space-x-2">
+                                    <i id="resetLengthCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                    <span class="text-xs text-gray-400">At least 8 characters</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i id="resetUppercaseCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                    <span class="text-xs text-gray-400">Contains uppercase letters (A-Z)</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i id="resetLowercaseCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                    <span class="text-xs text-gray-400">Contains lowercase letters (a-z)</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i id="resetNumberCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                    <span class="text-xs text-gray-400">Contains numbers (0-9)</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i id="resetSpecialCheck" class="fas fa-circle text-xs text-gray-500"></i>
+                                    <span class="text-xs text-gray-400">Contains special characters (!@#$%^&*)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="resetConfirmPassword" class="block text-sm font-medium text-gray-300 mb-2">Confirm Password *</label>
+                        <div class="relative">
+                            <input type="password" id="resetConfirmPassword" name="resetConfirmPassword" required
+                                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                                   placeholder="Confirm new password" oninput="checkResetPasswordMatch()">
+                            <button type="button" onclick="togglePasswordVisibility('resetConfirmPassword')" 
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                <i class="fas fa-eye" id="resetConfirmPasswordEye"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Password Match Indicator -->
+                        <div class="mt-2">
+                            <div class="flex items-center space-x-2">
+                                <i id="resetMatchIcon" class="fas fa-circle text-xs text-gray-500"></i>
+                                <span id="resetMatchText" class="text-xs text-gray-400">Passwords do not match</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-end space-x-3 pt-4">
+                        <button type="button" onclick="closePasswordModal()" 
+                                class="px-4 py-2 bg-white/10 border border-white/20 text-white font-medium rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200">
+                            Cancel
+                        </button>
+                        <button type="submit" id="resetConfirmBtn"
+                                class="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-lg hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200">
+                            Confirm Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Confirmation Modal -->
+    <div id="saveConfirmModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full max-w-md">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-question text-2xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Confirm Changes</h3>
+                    <p class="text-gray-300 mb-6">Are you sure you want to save the changes to this user?</p>
+                    
+                    <div class="flex items-center justify-center space-x-3">
+                        <button onclick="closeSaveModal()" 
+                                class="px-6 py-2 bg-white/10 border border-white/20 text-white font-medium rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200">
+                            Cancel
+                        </button>
+                        <button onclick="confirmSave()" 
+                                class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                            Confirm Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        let currentMode = 'view';
+        let currentUser = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Expand system submenu
+            document.getElementById('system-submenu').classList.remove('hidden');
+            document.getElementById('system-arrow').style.transform = 'rotate(180deg)';
+            
+            // Parse URL parameters
+            parseUrlParameters();
+            
+            // Initialize form
+            initializeForm();
+            
+            // Initialize event listeners
+            initializeEventListeners();
+        });
+
+        // Parse URL parameters
+        function parseUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentMode = urlParams.get('mode') || 'view';
+            const itCode = urlParams.get('itCode');
+            const action = urlParams.get('action');
+            
+            if (itCode) {
+                loadUserData(itCode);
+            }
+            
+            if (action === 'reset') {
+                setTimeout(() => openPasswordModal(), 100);
+            }
+            
+            updatePageTitle();
+        }
+
+        // Update page title based on mode
+        function updatePageTitle() {
+            const titleElement = document.getElementById('pageTitle');
+            const subtitleElement = document.getElementById('pageSubtitle');
+            
+            switch(currentMode) {
+                case 'new':
+                    titleElement.textContent = 'New User';
+                    subtitleElement.textContent = 'Create a new user account';
+                    break;
+                case 'edit':
+                    titleElement.textContent = 'Edit User';
+                    subtitleElement.textContent = 'Modify user information';
+                    break;
+                case 'view':
+                default:
+                    titleElement.textContent = 'User Detail';
+                    subtitleElement.textContent = 'View user information';
+                    break;
+            }
+        }
+
+        // Load user data
+        function loadUserData(itCode) {
+            // Simulate loading user data
+            currentUser = {
+                itCode: itCode,
+                userName: 'John Smith',
+                email: 'john.smith@company.com',
+                isActive: true,
+                userRole: 'admin'
+            };
+            
+            populateForm();
+        }
+
+        // Populate form with user data
+        function populateForm() {
+            if (!currentUser) return;
+            
+            document.getElementById('itCode').value = currentUser.itCode;
+            document.getElementById('userName').value = currentUser.userName;
+            document.getElementById('email').value = currentUser.email;
+            document.getElementById('isActive').checked = currentUser.isActive;
+            
+            const roleRadios = document.querySelectorAll('input[name="userRole"]');
+            roleRadios.forEach(radio => {
+                if (radio.value === currentUser.userRole) {
+                    radio.checked = true;
+                }
+            });
+        }
+
+                 // Initialize form
+         function initializeForm() {
+             if (currentMode === 'view') {
+                 // Disable all form inputs in view mode
+                 const formInputs = document.querySelectorAll('#userForm input, #userForm select, #userForm textarea');
+                 formInputs.forEach(input => {
+                     input.disabled = true;
+                 });
+                 
+                 // Hide action buttons in view mode
+                 document.getElementById('saveBtn').style.display = 'none';
+                 document.getElementById('resetPasswordBtn').style.display = 'none';
+             } else if (currentMode === 'new') {
+                 // Show password fields only for new user mode
+                 document.getElementById('passwordFields').classList.remove('hidden');
+                 // Hide reset password button for new users
+                 document.getElementById('resetPasswordBtn').style.display = 'none';
+                 // Initialize password strength indicators
+                 checkPasswordStrength();
+             } else if (currentMode === 'edit') {
+                 // Show reset password button only for edit mode
+                 document.getElementById('resetPasswordBtn').style.display = 'inline-flex';
+                 // Hide password fields for existing users
+                 document.getElementById('passwordFields').classList.add('hidden');
+             }
+         }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Form submission
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (currentMode !== 'view') {
+                    openSaveModal();
+                }
+            });
+
+            // Password reset form
+            document.getElementById('passwordResetForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handlePasswordReset();
+            });
+
+                         // Reset password button (only for edit mode)
+             const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+             if (resetPasswordBtn) {
+                 resetPasswordBtn.addEventListener('click', function() {
+                     openPasswordModal();
+                 });
+             }
+        }
+
+        // Open password reset modal
+        function openPasswordModal() {
+            document.getElementById('passwordResetModal').classList.remove('hidden');
+            document.getElementById('newPassword').focus();
+        }
+
+        // Close password reset modal
+        function closePasswordModal() {
+            document.getElementById('passwordResetModal').classList.add('hidden');
+            document.getElementById('passwordResetForm').reset();
+        }
+
+        // Handle password reset
+        function handlePasswordReset() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+            
+            // Simulate password reset
+            alert('Password reset successfully!');
+            closePasswordModal();
+        }
+
+        // Open save confirmation modal
+        function openSaveModal() {
+            document.getElementById('saveConfirmModal').classList.remove('hidden');
+        }
+
+        // Close save confirmation modal
+        function closeSaveModal() {
+            document.getElementById('saveConfirmModal').classList.add('hidden');
+        }
+
+                 // Confirm save
+         function confirmSave() {
+             // Validate password if in new user mode
+             if (currentMode === 'new') {
+                 const password = document.getElementById('password').value;
+                 const confirmPassword = document.getElementById('confirmPassword').value;
+                 
+                 // Check if passwords match
+                 if (password !== confirmPassword) {
+                     alert('Passwords do not match! Please ensure both password fields contain the same value.');
+                     closeSaveModal();
+                     return;
+                 }
+                 
+                                      // Check password strength
+                     if (!validatePassword(password)) {
+                         alert('Password does not meet requirements! Password must be at least 8 characters long and contain uppercase letters (A-Z), lowercase letters (a-z), numbers (0-9), and special characters (!@#$%^&*).');
+                         closeSaveModal();
+                         return;
+                     }
+             }
+             
+             // Simulate saving
+             alert('User information saved successfully!');
+             closeSaveModal();
+             
+             if (currentMode === 'new') {
+                 goBack();
+             }
+         }
+
+                 // Check password strength and update indicators
+         function checkPasswordStrength() {
+             const password = document.getElementById('password').value;
+             
+             // Check each requirement
+             const hasLength = password.length >= 8;
+             const hasUppercase = /[A-Z]/.test(password);
+             const hasLowercase = /[a-z]/.test(password);
+             const hasNumber = /\d/.test(password);
+             const hasSpecial = /[!@#$%^&*]/.test(password);
+             
+             // Update checkmarks
+             updateCheckmark('lengthCheck', hasLength);
+             updateCheckmark('uppercaseCheck', hasUppercase);
+             updateCheckmark('lowercaseCheck', hasLowercase);
+             updateCheckmark('numberCheck', hasNumber);
+             updateCheckmark('specialCheck', hasSpecial);
+             
+             // Calculate strength score (0-5)
+             const score = [hasLength, hasUppercase, hasLowercase, hasNumber, hasSpecial].filter(Boolean).length;
+             
+             // Update strength indicator
+             updateStrengthIndicator(score);
+             
+             // Check password match if confirm password has value
+             if (document.getElementById('confirmPassword').value) {
+                 checkPasswordMatch();
+             }
+         }
+         
+         // Update checkmark icon
+         function updateCheckmark(elementId, isValid) {
+             const element = document.getElementById(elementId);
+             if (isValid) {
+                 element.className = 'fas fa-check text-xs text-green-500';
+             } else {
+                 element.className = 'fas fa-circle text-xs text-gray-500';
+             }
+         }
+         
+         // Update strength indicator
+         function updateStrengthIndicator(score) {
+             const strengthText = document.getElementById('strengthText');
+             const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+             const texts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+             
+             // Update strength dots
+             for (let i = 1; i <= 5; i++) {
+                 const dot = document.getElementById(`strength${i}`);
+                 if (i <= score) {
+                     dot.className = `w-2 h-2 rounded-full ${colors[score - 1]}`;
+                 } else {
+                     dot.className = 'w-2 h-2 rounded-full bg-gray-500';
+                 }
+             }
+             
+             // Update strength text
+             if (score === 0) {
+                 strengthText.textContent = 'Very Weak';
+                 strengthText.className = 'text-xs text-gray-400';
+             } else {
+                 strengthText.textContent = texts[score - 1];
+                 strengthText.className = `text-xs ${score >= 4 ? 'text-green-400' : score >= 3 ? 'text-blue-400' : score >= 2 ? 'text-yellow-400' : 'text-orange-400'}`;
+             }
+         }
+         
+         // Check if passwords match
+         function checkPasswordMatch() {
+             const password = document.getElementById('password').value;
+             const confirmPassword = document.getElementById('confirmPassword').value;
+             const matchIcon = document.getElementById('matchIcon');
+             const matchText = document.getElementById('matchText');
+             
+             if (confirmPassword === '') {
+                 matchIcon.className = 'fas fa-circle text-xs text-gray-500';
+                 matchText.textContent = 'Passwords do not match';
+                 matchText.className = 'text-xs text-gray-400';
+                 return;
+             }
+             
+             if (password === confirmPassword) {
+                 matchIcon.className = 'fas fa-check text-xs text-green-500';
+                 matchText.textContent = 'Passwords match';
+                 matchText.className = 'text-xs text-green-400';
+             } else {
+                 matchIcon.className = 'fas fa-times text-xs text-red-500';
+                 matchText.textContent = 'Passwords do not match';
+                 matchText.className = 'text-xs text-red-400';
+             }
+         }
+         
+         // Validate password strength
+         function validatePassword(password) {
+             // Password must be at least 8 characters long
+             if (password.length < 8) {
+                 return false;
+             }
+             
+             // Check for uppercase letter (A-Z)
+             if (!/[A-Z]/.test(password)) {
+                 return false;
+             }
+             
+             // Check for lowercase letter (a-z)
+             if (!/[a-z]/.test(password)) {
+                 return false;
+             }
+             
+             // Check for number (0-9)
+             if (!/\d/.test(password)) {
+                 return false;
+             }
+             
+             // Check for special character (!@#$%^&*)
+             if (!/[!@#$%^&*]/.test(password)) {
+                 return false;
+             }
+             
+             return true;
+         }
+ 
+         // Toggle password visibility
+         function togglePasswordVisibility(fieldId) {
+             const field = document.getElementById(fieldId);
+             const eyeIcon = document.getElementById(fieldId + 'Eye');
+             
+             if (field.type === 'password') {
+                 field.type = 'text';
+                 eyeIcon.className = 'fas fa-eye-slash';
+             } else {
+                 field.type = 'password';
+                 eyeIcon.className = 'fas fa-eye';
+             }
+         }
+
+        // Go back to user management
+        function goBack() {
+            window.location.href = 'user-management.html';
+        }
+
+        // Submenu toggle functionality
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const arrow = document.getElementById(menuId + '-arrow');
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        // Password Reset Modal Functions
+        function openPasswordModal() {
+            document.getElementById('passwordResetModal').classList.remove('hidden');
+            // Reset form and indicators
+            document.getElementById('resetNewPassword').value = '';
+            document.getElementById('resetConfirmPassword').value = '';
+            resetResetPasswordIndicators();
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordResetModal').classList.add('hidden');
+            // Reset form and indicators
+            document.getElementById('resetNewPassword').value = '';
+            document.getElementById('resetConfirmPassword').value = '';
+            resetResetPasswordIndicators();
+        }
+
+        function resetResetPasswordIndicators() {
+            // Reset strength indicators
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`resetStrength${i}`).className = 'w-2 h-2 rounded-full bg-gray-500';
+            }
+            document.getElementById('resetStrengthText').textContent = 'Weak';
+            document.getElementById('resetStrengthText').className = 'text-xs text-gray-400';
+            
+            // Reset requirement checks
+            document.getElementById('resetLengthCheck').className = 'fas fa-circle text-xs text-gray-500';
+            document.getElementById('resetUppercaseCheck').className = 'fas fa-circle text-xs text-gray-500';
+            document.getElementById('resetLowercaseCheck').className = 'fas fa-circle text-xs text-gray-500';
+            document.getElementById('resetNumberCheck').className = 'fas fa-circle text-xs text-gray-500';
+            document.getElementById('resetSpecialCheck').className = 'fas fa-circle text-xs text-gray-500';
+            
+            // Reset match indicator
+            document.getElementById('resetMatchIcon').className = 'fas fa-circle text-xs text-gray-500';
+            document.getElementById('resetMatchText').textContent = 'Passwords do not match';
+            document.getElementById('resetMatchText').className = 'text-xs text-gray-400';
+        }
+
+        function checkResetPasswordStrength() {
+            const password = document.getElementById('resetNewPassword').value;
+            
+            // Check each requirement
+            const hasLength = password.length >= 8;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*]/.test(password);
+            
+            // Update checkmarks
+            updateResetCheckmark('resetLengthCheck', hasLength);
+            updateResetCheckmark('resetUppercaseCheck', hasUppercase);
+            updateResetCheckmark('resetLowercaseCheck', hasLowercase);
+            updateResetCheckmark('resetNumberCheck', hasNumber);
+            updateResetCheckmark('resetSpecialCheck', hasSpecial);
+            
+            // Calculate strength score (0-5)
+            const score = [hasLength, hasUppercase, hasLowercase, hasNumber, hasSpecial].filter(Boolean).length;
+            
+            // Update strength indicator
+            updateResetStrengthIndicator(score);
+            
+            // Check password match if confirm password has value
+            if (document.getElementById('resetConfirmPassword').value) {
+                checkResetPasswordMatch();
+            }
+        }
+
+        function updateResetCheckmark(elementId, isValid) {
+            const element = document.getElementById(elementId);
+            if (isValid) {
+                element.className = 'fas fa-check text-xs text-green-500';
+            } else {
+                element.className = 'fas fa-circle text-xs text-gray-500';
+            }
+        }
+
+        function updateResetStrengthIndicator(score) {
+            const strengthText = document.getElementById('resetStrengthText');
+            const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+            const texts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            
+            // Update strength dots
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById(`resetStrength${i}`);
+                if (i <= score) {
+                    dot.className = `w-2 h-2 rounded-full ${colors[score - 1]}`;
+                } else {
+                    dot.className = 'w-2 h-2 rounded-full bg-gray-500';
+                }
+            }
+            
+            // Update strength text
+            if (score === 0) {
+                strengthText.textContent = 'Very Weak';
+                strengthText.className = 'text-xs text-gray-400';
+            } else {
+                strengthText.textContent = texts[score - 1];
+                strengthText.className = `text-xs ${score >= 4 ? 'text-green-400' : score >= 3 ? 'text-blue-400' : score >= 2 ? 'text-yellow-400' : 'text-orange-400'}`;
+            }
+        }
+
+        function checkResetPasswordMatch() {
+            const password = document.getElementById('resetNewPassword').value;
+            const confirmPassword = document.getElementById('resetConfirmPassword').value;
+            const matchIcon = document.getElementById('resetMatchIcon');
+            const matchText = document.getElementById('resetMatchText');
+            
+            if (confirmPassword === '') {
+                matchIcon.className = 'fas fa-circle text-xs text-gray-500';
+                matchText.textContent = 'Passwords do not match';
+                matchText.className = 'text-xs text-gray-400';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                matchIcon.className = 'fas fa-check text-xs text-green-500';
+                matchText.textContent = 'Passwords match';
+                matchText.className = 'text-xs text-green-400';
+            } else {
+                matchIcon.className = 'fas fa-times text-xs text-red-500';
+                matchText.textContent = 'Passwords do not match';
+                matchText.className = 'text-xs text-red-400';
+            }
+        }
+
+        function validateResetPassword(password) {
+            // Password must be at least 8 characters long
+            if (password.length < 8) {
+                return false;
+            }
+            
+            // Check for uppercase letter (A-Z)
+            if (!/[A-Z]/.test(password)) {
+                return false;
+            }
+            
+            // Check for lowercase letter (a-z)
+            if (!/[a-z]/.test(password)) {
+                return false;
+            }
+            
+            // Check for number (0-9)
+            if (!/\d/.test(password)) {
+                return false;
+            }
+            
+            // Check for special character (!@#$%^&*)
+            if (!/[!@#$%^&*]/.test(password)) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Initialize password reset form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('passwordResetForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newPassword = document.getElementById('resetNewPassword').value;
+                const confirmPassword = document.getElementById('resetConfirmPassword').value;
+                
+                // Check if passwords match
+                if (newPassword !== confirmPassword) {
+                    alert('Passwords do not match. Please ensure both passwords are identical.');
+                    return;
+                }
+                
+                // Check password strength requirements
+                if (!validateResetPassword(newPassword)) {
+                    alert('Password does not meet the requirements. Please ensure your password:\n\n' +
+                          '✅ At least 8 characters\n' +
+                          '✅ Contains uppercase letters (A-Z)\n' +
+                          '✅ Contains lowercase letters (a-z)\n' +
+                          '✅ Contains numbers (0-9)\n' +
+                          '✅ Contains special characters (!@#$%^&*)');
+                    return;
+                }
+                
+                // If validation passes, show success message and close modal
+                alert('Password has been successfully reset!');
+                closePasswordModal();
+            });
+        });
+    </script>
+</body>
+</html>

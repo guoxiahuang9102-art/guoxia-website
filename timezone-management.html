@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Zone - Supply Chain Control Tower Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#0f172a',
+                        accent: '#06b6d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        error: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Ensure dropdowns are always on top */
+        [id$="Dropdown"] {
+            z-index: 999999 !important;
+            position: absolute !important;
+        }
+        
+        /* Ensure search criteria section is above table */
+        .search-criteria-section {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Ensure table section is below search */
+        .table-section {
+            position: relative;
+            z-index: 0;
+        }
+        
+        /* Ensure sidebar navigation is always visible and fixed */
+        .sidebar-navigation {
+            position: relative;
+            z-index: 20;
+            transform: none !important;
+            transition: none !important;
+        }
+        
+        /* Prevent any sliding animations on navigation */
+        .sidebar-navigation * {
+            transform: none !important;
+            transition: none !important;
+        }
+        
+        /* Global prevention of sliding effects */
+        * {
+            animation: none !important;
+        }
+        
+        /* Ensure sidebar is always visible and never slides */
+        .sidebar-navigation {
+            position: relative !important;
+            z-index: 20 !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            left: 0 !important;
+            right: auto !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        
+        /* Prevent any CSS animations or transitions */
+        body, html {
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        /* Completely disable all transitions and animations globally */
+        *, *::before, *::after {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+        }
+        
+        /* Force sidebar to be always visible and never move */
+        .sidebar-navigation {
+            position: relative !important;
+            z-index: 9999 !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            left: 0 !important;
+            right: auto !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            width: 16rem !important;
+            min-width: 16rem !important;
+            max-width: 16rem !important;
+            overflow: visible !important;
+        }
+        
+        /* Ensure main content area doesn't affect sidebar */
+        .main-content {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+
+    <div class="relative z-10 flex h-screen">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar-navigation w-64 bg-white/10 backdrop-blur-lg border-r border-white/20 flex flex-col flex-shrink-0">
+            <!-- Logo and Title -->
+            <div class="p-6 border-b border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tower-broadcast text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">
+                            Supply Chain
+                        </h1>
+                        <p class="text-xs text-gray-400">
+                            Control Tower
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-4 space-y-2">
+                <!-- Home -->
+                <a href="dashboard.html" onclick="goToHome(event)" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="font-medium">Home</span>
+                </a>
+
+                <!-- Dashboard -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('dashboard')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-line text-lg"></i>
+                            <span class="font-medium">Dashboard</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="dashboard-arrow"></i>
+                    </button>
+                    <div id="dashboard-submenu" class="hidden pl-8 space-y-1">
+                        <a href="operations-dashboard.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Operations Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Operations Report -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('reports')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-file-alt text-lg"></i>
+                            <span class="font-medium">Operations Report</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="reports-arrow"></i>
+                    </button>
+                    <div id="reports-submenu" class="hidden pl-8 space-y-1">
+                        <a href="ocean-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Ocean Booking Report
+                        </a>
+                        <a href="air-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Air Booking Report
+                        </a>
+                    </div>
+                </div>
+
+                <!-- System -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('system')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-cog text-lg"></i>
+                            <span class="font-medium">System</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="system-arrow"></i>
+                    </button>
+                    <div id="system-submenu" class="hidden pl-8 space-y-1">
+                        <a href="user-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            User Management
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Basic Data -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 bg-blue-600/20 border border-blue-500/30 rounded-lg text-blue-300" onclick="toggleSubmenu('basic')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-database text-lg"></i>
+                            <span class="font-medium">Basic Data</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="basic-arrow"></i>
+                    </button>
+                    <div id="basic-submenu" class="pl-8 space-y-1">
+                        <a href="timezone-management.html" class="block px-4 py-2 text-sm text-blue-300 bg-blue-600/20 rounded">
+                            Time Zone
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="p-4 border-t border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-white">admin</p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-1 bg-red-600/20 border border-red-500/30 text-red-300 rounded-lg hover:bg-red-600/30 text-sm">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="bg-white/10 backdrop-blur-lg border-b border-white/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Time Zone</h2>
+                        <p class="text-gray-400">Manage time zone data for global operations</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Header actions removed as requested -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-auto relative z-0">
+                <!-- Advanced Search Criteria Section -->
+                <div class="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8 mb-8 relative z-10 search-criteria-section shadow-2xl">
+                    <!-- Header with Search Icon and Title -->
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-blue-400/20 rounded-xl flex items-center justify-center mr-3">
+                            <i class="fas fa-search text-xl text-blue-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Search Criteria</h3>
+                    </div>
+
+                    <!-- Search Fields Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                        <!-- Country/Region -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-200 flex items-center">
+                                <i class="fas fa-globe mr-2 text-blue-400"></i>
+                                Country/Region
+                            </label>
+                            <div class="relative">
+                                <div id="countryInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('country')">
+                                    <span class="text-gray-400">Select Country/Region...</span>
+                                </div>
+                                <div id="countryDropdown" class="absolute z-[99999] w-full mt-2 bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                    <div class="p-3 border-b border-white/10">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-gray-300">Country/Region Options</span>
+                                            <button onclick="selectAllOptions('country')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                        </div>
+                                        <input type="text" placeholder="Search Country/Region..." 
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                                               oninput="filterMultiOptions('country', this.value)">
+                                    </div>
+                                    <div class="p-2 space-y-1" id="countryOptions">
+                                        <!-- Options will be populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- City -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-200 flex items-center">
+                                <i class="fas fa-city mr-2 text-green-400"></i>
+                                City
+                            </label>
+                            <div class="relative">
+                                <div id="cityInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('city')">
+                                    <span class="text-gray-400">Select City...</span>
+                                </div>
+                                <div id="cityDropdown" class="absolute z-[99999] w-full mt-2 bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                    <div class="p-3 border-b border-white/10">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-gray-300">City Options</span>
+                                            <button onclick="selectAllOptions('city')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                        </div>
+                                        <input type="text" placeholder="Search City..." 
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 text-sm"
+                                               oninput="filterMultiOptions('city', this.value)">
+                                    </div>
+                                    <div class="p-2 space-y-1" id="cityOptions">
+                                        <!-- Options will be populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UNLOCO Code -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-200 flex items-center">
+                                <i class="fas fa-ship mr-2 text-purple-400"></i>
+                                UNLOCO Code
+                            </label>
+                            <div class="relative">
+                                <div id="unlocoInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('unloco')">
+                                    <span class="text-gray-400">Select UNLOCO Code...</span>
+                                </div>
+                                <div id="unlocoDropdown" class="absolute z-[99999] w-full mt-2 bg-slate-800 border border-white/20 rounded-xl shadow-xl hidden max-h-64 overflow-y-auto">
+                                    <div class="p-3 border-b border-white/10">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-gray-300">UNLOCO Code Options</span>
+                                            <button onclick="selectAllOptions('unloco')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                        </div>
+                                        <input type="text" placeholder="Search UNLOCO Code..." 
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-purple-500 text-sm"
+                                               oninput="filterMultiOptions('unloco', this.value)">
+                                    </div>
+                                    <div class="p-2 space-y-1" id="unlocoOptions">
+                                        <!-- Options will be populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IATA Code -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-200 flex items-center">
+                                <i class="fas fa-plane mr-2 text-orange-400"></i>
+                                IATA Code
+                            </label>
+                            <div class="relative">
+                                <div id="iataInput" class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 min-h-[48px] cursor-pointer flex flex-wrap items-center gap-2" onclick="toggleMultiDropdown('iata')">
+                                    <span class="text-gray-400">Select IATA Code...</span>
+                                </div>
+                                <div id="iataDropdown" class="absolute z-[99999] w-full mt-2 bg-slate-800 border border-white/20 rounded-lg shadow-xl hidden max-h-64 overflow-y-auto">
+                                    <div class="p-3 border-b border-white/10">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-gray-300">IATA Code Options</span>
+                                            <button onclick="selectAllOptions('iata')" class="text-xs text-blue-400 hover:text-blue-300">Select All</button>
+                                        </div>
+                                        <input type="text" placeholder="Search IATA Code..." 
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm"
+                                               oninput="filterMultiOptions('iata', this.value)">
+                                    </div>
+                                    <div class="p-2 space-y-1" id="iataOptions">
+                                        <!-- Options will be populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+                <!-- Action Buttons Section -->
+                <div class="flex items-center justify-end mb-6">
+                    <div class="flex items-center space-x-4">
+                        <!-- Clear & Reset Button -->
+                        <button id="clearAllBtn" class="px-6 py-3 bg-gradient-to-r from-gray-600/20 to-slate-600/20 border border-gray-500/30 text-gray-300 font-medium rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-300 flex items-center space-x-2 opacity-50 cursor-not-allowed" disabled>
+                            <i class="fas fa-undo-alt"></i>
+                            <span>Clear & Reset</span>
+                        </button>
+                        
+                        <!-- Search Button -->
+                        <button id="searchBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-search"></i>
+                            <span>Search</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Data Table Section -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden relative z-0 table-section">
+                    <!-- Table Header -->
+                    <div class="px-6 py-4 border-b border-white/20">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-white">Time Zone Data</h3>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-sm text-gray-400">Total Records: <span id="totalRecords">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-white/5">
+                                <tr class="border-b border-white/20">
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">UNLOCO Code</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">IATA Code</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Port Name</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Country/Region</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">State Code</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">State Name</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">City Name</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Time Zone</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Latitude</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Longitude</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Is Active</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">IANA Code</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">UTC Offset</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timezoneTableBody">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="bg-white/20 px-4 py-3 flex items-center justify-between">
+                        <div class="text-sm text-gray-300">
+                            Showing <span id="startRecord">1</span> to <span id="endRecord">30</span> of <span id="totalRecordsPagination">0</span> records
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button id="prevPage" class="px-3 py-1 bg-white/10 border border-white/20 text-white rounded hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="px-3 py-1 text-white">
+                                Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                            </span>
+                            <button id="nextPage" class="px-3 py-1 bg-white/10 border border-white/20 text-white rounded hover:bg-white/20 transition-colors">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentPage = 1;
+        const recordsPerPage = 30;
+        let allTimezones = [];
+        let filteredTimezones = [];
+        
+        // Multi-select support with enhanced data structure
+        let selectedValues = {
+            country: [],
+            city: [],
+            unloco: [],
+            iata: []
+        };
+        
+        // Search statistics
+        let searchStats = {
+            totalRecords: 0,
+            filteredRecords: 0,
+            searchTime: 0
+        };
+
+        // Multi-select tag management functions
+        function addSelectedValue(field, value) {
+            if (!selectedValues[field].includes(value)) {
+                selectedValues[field].push(value);
+                updateSelectedValuesDisplay(field);
+                updateSelectedSummary();
+                updateClearAllButton();
+            }
+        }
+
+        function removeSelectedValue(field, value) {
+            const index = selectedValues[field].indexOf(value);
+            if (index > -1) {
+                selectedValues[field].splice(index, 1);
+                updateSelectedValuesDisplay(field);
+                updateSelectedSummary();
+                updateClearAllButton();
+            }
+        }
+
+        function updateSelectedValuesDisplay(field) {
+            const tagsContainer = document.getElementById(field + 'Tags');
+            const countElement = document.getElementById(field + 'Count');
+            
+            if (!tagsContainer || !countElement) return;
+            
+            // Clear existing tags
+            tagsContainer.innerHTML = '';
+            
+            // Add tags for selected values
+            selectedValues[field].forEach(value => {
+                const tag = document.createElement('div');
+                tag.className = 'inline-flex items-center gap-1 px-3 py-1 bg-white/20 border border-white/30 rounded-full text-sm text-white hover:bg-white/30 transition-colors cursor-pointer';
+                tag.innerHTML = `
+                    <span>${value}</span>
+                    <i class="fas fa-times text-xs hover:text-red-300" onclick="removeSelectedValue('${field}', '${value}')"></i>
+                `;
+                tagsContainer.appendChild(tag);
+            });
+            
+            // Update count
+            countElement.textContent = selectedValues[field].length;
+        }
+
+        function updateSelectedSummary() {
+            const totalSelected = Object.values(selectedValues).reduce((sum, arr) => sum + arr.length, 0);
+            const summaryElement = document.getElementById('selectedSummary');
+            const totalElement = document.getElementById('totalSelected');
+            
+            if (totalSelected > 0) {
+                if (summaryElement) summaryElement.classList.remove('hidden');
+                if (totalElement) totalElement.textContent = totalSelected;
+            } else {
+                if (summaryElement) summaryElement.classList.add('hidden');
+            }
+        }
+
+        function updateClearAllButton() {
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            const totalSelected = Object.values(selectedValues).reduce((sum, arr) => sum + arr.length, 0);
+            
+            console.log('Updating Clear All button, total selected:', totalSelected);
+            console.log('Selected values:', selectedValues);
+            
+            if (clearAllBtn) {
+                if (totalSelected > 0) {
+                    clearAllBtn.disabled = false;
+                    clearAllBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    clearAllBtn.classList.add('hover:from-gray-600/30', 'hover:to-slate-600/30');
+                    console.log('Clear All button enabled');
+                } else {
+                    clearAllBtn.disabled = true;
+                    clearAllBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    clearAllBtn.classList.remove('hover:from-gray-600/30', 'hover:to-slate-600/30');
+                    console.log('Clear All button disabled');
+                }
+            }
+        }
+
+        // Quick filter functions
+        function applyQuickFilter(type) {
+            // Clear existing selections
+            Object.keys(selectedValues).forEach(key => {
+                selectedValues[key] = [];
+                updateSelectedValuesDisplay(key);
+            });
+            
+            // Apply quick filter based on type
+            switch(type) {
+                case 'asia':
+                    addSelectedValue('country', 'China');
+                    addSelectedValue('country', 'Japan');
+                    addSelectedValue('country', 'South Korea');
+                    addSelectedValue('country', 'Singapore');
+                    break;
+                case 'europe':
+                    addSelectedValue('country', 'Germany');
+                    addSelectedValue('country', 'France');
+                    addSelectedValue('country', 'United Kingdom');
+                    addSelectedValue('country', 'Netherlands');
+                    break;
+                case 'americas':
+                    addSelectedValue('country', 'United States');
+                    addSelectedValue('country', 'Canada');
+                    addSelectedValue('country', 'Brazil');
+                    addSelectedValue('country', 'Mexico');
+                    break;
+                case 'active':
+                    // This would need to be implemented based on your data structure
+                    break;
+            }
+            
+            updateSelectedSummary();
+            updateClearAllButton();
+        }
+
+        // Enhanced search status functions
+        function showSearchStatus(type, count = 0) {
+            const statusContainer = document.getElementById('searchStatus');
+            const resultDiv = document.getElementById('searchResult');
+            
+            if (!statusContainer || !resultDiv) return;
+            
+            statusContainer.classList.remove('hidden');
+            
+            let icon, message, color;
+            
+            switch(type) {
+                case 'searching':
+                    icon = 'fas fa-spinner fa-spin';
+                    message = 'Searching...';
+                    color = 'text-blue-400';
+                    break;
+                case 'success':
+                    icon = 'fas fa-check-circle';
+                    message = `Found ${count} record${count === 1 ? '' : 's'}`;
+                    color = 'text-green-400';
+                    break;
+                case 'no-results':
+                    icon = 'fas fa-exclamation-triangle';
+                    message = 'No results found for the selected criteria';
+                    color = 'text-orange-400';
+                    break;
+                default:
+                    return;
+            }
+            
+            resultDiv.innerHTML = `
+                <i class="${icon} ${color}"></i>
+                <span class="${color}">${message}</span>
+            `;
+        }
+
+        function hideSearchStatus() {
+            const statusContainer = document.getElementById('searchStatus');
+            if (statusContainer) {
+                statusContainer.classList.add('hidden');
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded, initializing page...');
+            initializeData();
+            setupEventListeners();
+            updateTable();
+            updatePagination();
+            
+            // Initialize UI state
+            updateSelectedSummary();
+            updateClearAllButton();
+            
+            // Update total records display
+            const totalRecordsDisplay = document.getElementById('totalRecordsDisplay');
+            if (totalRecordsDisplay) {
+                totalRecordsDisplay.textContent = allTimezones.length;
+            }
+            
+            console.log('Page initialization completed');
+        });
+
+        // Initialize timezone data
+        function initializeData() {
+            allTimezones = [
+                // China (15 ports)
+                { unlocoCode: 'CNSHA', iataCode: 'SHA', portName: 'Shanghai Port', country: 'China', stateCode: 'SH', stateName: 'Shanghai', cityName: 'Shanghai', timeZone: 'Asia/Shanghai', latitude: '31.2304', longitude: '121.4737', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNPEK', iataCode: 'PEK', portName: 'Beijing Port', country: 'China', stateCode: 'BJ', stateName: 'Beijing', cityName: 'Beijing', timeZone: 'Asia/Shanghai', latitude: '39.9042', longitude: '116.4074', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNGZ', iataCode: 'CAN', portName: 'Guangzhou Port', country: 'China', stateCode: 'GD', stateName: 'Guangdong', cityName: 'Guangzhou', timeZone: 'Asia/Shanghai', latitude: '23.1291', longitude: '113.2644', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNXMN', iataCode: 'XMN', portName: 'Xiamen Port', country: 'China', stateCode: 'FJ', stateName: 'Fujian', cityName: 'Xiamen', timeZone: 'Asia/Shanghai', latitude: '24.4798', longitude: '118.0894', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNQIN', iataCode: 'TAO', portName: 'Qingdao Port', country: 'China', stateCode: 'SD', stateName: 'Shandong', cityName: 'Qingdao', timeZone: 'Asia/Shanghai', latitude: '36.0671', longitude: '120.3826', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNTIA', iataCode: 'NGB', portName: 'Ningbo Port', country: 'China', stateCode: 'ZJ', stateName: 'Zhejiang', cityName: 'Ningbo', timeZone: 'Asia/Shanghai', latitude: '29.8683', longitude: '121.5440', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNSZX', iataCode: 'SZX', portName: 'Shenzhen Port', country: 'China', stateCode: 'GD', stateName: 'Guangdong', cityName: 'Shenzhen', timeZone: 'Asia/Shanghai', latitude: '22.3193', longitude: '114.1694', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNTAN', iataCode: 'TAN', portName: 'Tianjin Port', country: 'China', stateCode: 'TJ', stateName: 'Tianjin', cityName: 'Tianjin', timeZone: 'Asia/Shanghai', latitude: '39.0842', longitude: '117.2009', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNDAL', iataCode: 'DLC', portName: 'Dalian Port', country: 'China', stateCode: 'LN', stateName: 'Liaoning', cityName: 'Dalian', timeZone: 'Asia/Shanghai', latitude: '38.9140', longitude: '121.6147', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNYAN', iataCode: 'YNT', portName: 'Yantai Port', country: 'China', stateCode: 'SD', stateName: 'Shandong', cityName: 'Yantai', timeZone: 'Asia/Shanghai', latitude: '37.4641', longitude: '121.4479', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNFAN', iataCode: 'FOC', portName: 'Fuzhou Port', country: 'China', stateCode: 'FJ', stateName: 'Fujian', cityName: 'Fuzhou', timeZone: 'Asia/Shanghai', latitude: '26.0745', longitude: '119.2965', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNZHA', iataCode: 'ZHA', portName: 'Zhanjiang Port', country: 'China', stateCode: 'GD', stateName: 'Guangdong', cityName: 'Zhanjiang', timeZone: 'Asia/Shanghai', latitude: '21.2707', longitude: '110.3594', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNLIU', iataCode: 'LZH', portName: 'Liuzhou Port', country: 'China', stateCode: 'GX', stateName: 'Guangxi', cityName: 'Liuzhou', timeZone: 'Asia/Shanghai', latitude: '24.3146', longitude: '109.4283', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNWUH', iataCode: 'WUH', portName: 'Wuhan Port', country: 'China', stateCode: 'HB', stateName: 'Hubei', cityName: 'Wuhan', timeZone: 'Asia/Shanghai', latitude: '30.5928', longitude: '114.3055', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNCHQ', iataCode: 'CKG', portName: 'Chongqing Port', country: 'China', stateCode: 'CQ', stateName: 'Chongqing', cityName: 'Chongqing', timeZone: 'Asia/Shanghai', latitude: '29.4316', longitude: '106.9123', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+
+                // United States (12 ports)
+                { unlocoCode: 'USNYC', iataCode: 'JFK', portName: 'New York Port', country: 'United States', stateCode: 'NY', stateName: 'New York', cityName: 'New York', timeZone: 'America/New_York', latitude: '40.7128', longitude: '-74.0060', isActive: true, ianaCode: 'America/New_York', utcOffset: '-05:00' },
+                { unlocoCode: 'USLAX', iataCode: 'LAX', portName: 'Los Angeles Port', country: 'United States', stateCode: 'CA', stateName: 'California', cityName: 'Los Angeles', timeZone: 'America/Los_Angeles', latitude: '34.0522', longitude: '-118.2437', isActive: true, ianaCode: 'America/Los_Angeles', utcOffset: '-08:00' },
+                { unlocoCode: 'USCHI', iataCode: 'ORD', portName: 'Chicago Port', country: 'United States', stateCode: 'IL', stateName: 'Illinois', cityName: 'Chicago', timeZone: 'America/Chicago', latitude: '41.8781', longitude: '-87.6298', isActive: true, ianaCode: 'America/Chicago', utcOffset: '-06:00' },
+                { unlocoCode: 'USMIA', iataCode: 'MIA', portName: 'Miami Port', country: 'United States', stateCode: 'FL', stateName: 'Florida', cityName: 'Miami', timeZone: 'America/New_York', latitude: '25.7617', longitude: '-80.1918', isActive: true, ianaCode: 'America/New_York', utcOffset: '-05:00' },
+                { unlocoCode: 'USSEA', iataCode: 'SEA', portName: 'Seattle Port', country: 'United States', stateCode: 'WA', stateName: 'Washington', cityName: 'Seattle', timeZone: 'America/Los_Angeles', latitude: '47.6062', longitude: '-122.3321', isActive: true, ianaCode: 'America/Los_Angeles', utcOffset: '-08:00' },
+                { unlocoCode: 'USDFW', iataCode: 'DFW', portName: 'Dallas Port', country: 'United States', stateCode: 'TX', stateName: 'Texas', cityName: 'Dallas', timeZone: 'America/Chicago', latitude: '32.7767', longitude: '-96.7970', isActive: true, ianaCode: 'America/Chicago', utcOffset: '-06:00' },
+                { unlocoCode: 'USHOU', iataCode: 'IAH', portName: 'Houston Port', country: 'United States', stateCode: 'TX', stateName: 'Texas', cityName: 'Houston', timeZone: 'America/Chicago', latitude: '29.7604', longitude: '-95.3698', isActive: true, ianaCode: 'America/Chicago', utcOffset: '-06:00' },
+                { unlocoCode: 'USPHX', iataCode: 'PHX', portName: 'Phoenix Port', country: 'United States', stateCode: 'AZ', stateName: 'Arizona', cityName: 'Phoenix', timeZone: 'America/Phoenix', latitude: '33.4484', longitude: '-112.0740', isActive: true, ianaCode: 'America/Phoenix', utcOffset: '-07:00' },
+                { unlocoCode: 'USPHI', iataCode: 'PHL', portName: 'Philadelphia Port', country: 'United States', stateCode: 'PA', stateName: 'Pennsylvania', cityName: 'Philadelphia', timeZone: 'America/New_York', latitude: '39.9526', longitude: '-75.1652', isActive: true, ianaCode: 'America/New_York', utcOffset: '-05:00' },
+                { unlocoCode: 'USSAN', iataCode: 'SAN', portName: 'San Diego Port', country: 'United States', stateCode: 'CA', stateName: 'California', cityName: 'San Diego', timeZone: 'America/Los_Angeles', latitude: '32.7157', longitude: '-117.1611', isActive: true, ianaCode: 'America/Los_Angeles', utcOffset: '-08:00' },
+                { unlocoCode: 'USATL', iataCode: 'ATL', portName: 'Atlanta Port', country: 'United States', stateCode: 'GA', stateName: 'Georgia', cityName: 'Atlanta', timeZone: 'America/New_York', latitude: '33.7490', longitude: '-84.3880', isActive: true, ianaCode: 'America/New_York', utcOffset: '-05:00' },
+                { unlocoCode: 'USLAS', iataCode: 'LAS', portName: 'Las Vegas Port', country: 'United States', stateCode: 'NV', stateName: 'Nevada', cityName: 'Las Vegas', timeZone: 'America/Los_Angeles', latitude: '36.1699', longitude: '-115.1398', isActive: true, ianaCode: 'America/Los_Angeles', utcOffset: '-08:00' },
+                { unlocoCode: 'USDEN', iataCode: 'DEN', portName: 'Denver Port', country: 'United States', stateCode: 'CO', stateName: 'Colorado', cityName: 'Denver', timeZone: 'America/Denver', latitude: '39.7392', longitude: '-104.9903', isActive: true, ianaCode: 'America/Denver', utcOffset: '-07:00' },
+
+                // Germany (8 ports)
+                { unlocoCode: 'DEHAM', iataCode: 'HAM', portName: 'Hamburg Port', country: 'Germany', stateCode: 'HH', stateName: 'Hamburg', cityName: 'Hamburg', timeZone: 'Europe/Berlin', latitude: '53.5511', longitude: '9.9937', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DEBER', iataCode: 'BER', portName: 'Berlin Port', country: 'Germany', stateCode: 'BE', stateName: 'Berlin', cityName: 'Berlin', timeZone: 'Europe/Berlin', latitude: '52.5200', longitude: '13.4050', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DEMUC', iataCode: 'MUC', portName: 'Munich Port', country: 'Germany', stateCode: 'BY', stateName: 'Bavaria', cityName: 'Munich', timeZone: 'Europe/Berlin', latitude: '48.1351', longitude: '11.5820', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DEFRA', iataCode: 'FRA', portName: 'Frankfurt Port', country: 'Germany', stateCode: 'HE', stateName: 'Hesse', cityName: 'Frankfurt', timeZone: 'Europe/Berlin', latitude: '50.1109', longitude: '8.6821', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DEKEL', iataCode: 'CGN', portName: 'Cologne Port', country: 'Germany', stateCode: 'NW', stateName: 'North Rhine-Westphalia', cityName: 'Cologne', timeZone: 'Europe/Berlin', latitude: '50.9375', longitude: '6.9603', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DEBON', iataCode: 'BON', portName: 'Bonn Port', country: 'Germany', stateCode: 'NW', stateName: 'North Rhine-Westphalia', cityName: 'Bonn', timeZone: 'Europe/Berlin', latitude: '50.7374', longitude: '7.0982', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DEDUS', iataCode: 'DUS', portName: 'Düsseldorf Port', country: 'Germany', stateCode: 'NW', stateName: 'North Rhine-Westphalia', cityName: 'Düsseldorf', timeZone: 'Europe/Berlin', latitude: '51.2277', longitude: '6.7735', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+                { unlocoCode: 'DELEI', iataCode: 'LEJ', portName: 'Leipzig Port', country: 'Germany', stateCode: 'SN', stateName: 'Saxony', cityName: 'Leipzig', timeZone: 'Europe/Berlin', latitude: '51.3397', longitude: '12.3731', isActive: true, ianaCode: 'Europe/Berlin', utcOffset: '+01:00' },
+
+                // Japan (8 ports)
+                { unlocoCode: 'JPTYO', iataCode: 'NRT', portName: 'Tokyo Port', country: 'Japan', stateCode: 'TYO', stateName: 'Tokyo', cityName: 'Tokyo', timeZone: 'Asia/Tokyo', latitude: '35.6762', longitude: '139.6503', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPOSA', iataCode: 'KIX', portName: 'Osaka Port', country: 'Japan', stateCode: 'OSA', stateName: 'Osaka', cityName: 'Osaka', timeZone: 'Asia/Tokyo', latitude: '34.6937', longitude: '135.5023', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPYOK', iataCode: 'YOK', portName: 'Yokohama Port', country: 'Japan', stateCode: 'KAN', stateName: 'Kanagawa', cityName: 'Yokohama', timeZone: 'Asia/Tokyo', latitude: '35.4437', longitude: '139.6380', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPFUK', iataCode: 'FUK', portName: 'Fukuoka Port', country: 'Japan', stateCode: 'FUK', stateName: 'Fukuoka', cityName: 'Fukuoka', timeZone: 'Asia/Tokyo', latitude: '33.5902', longitude: '130.4017', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPSAP', iataCode: 'CTS', portName: 'Sapporo Port', country: 'Japan', stateCode: 'HOK', stateName: 'Hokkaido', cityName: 'Sapporo', timeZone: 'Asia/Tokyo', latitude: '43.0618', longitude: '141.3545', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPNAG', iataCode: 'NGO', portName: 'Nagoya Port', country: 'Japan', stateCode: 'AIC', stateName: 'Aichi', cityName: 'Nagoya', timeZone: 'Asia/Tokyo', latitude: '35.1815', longitude: '136.9066', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPKOB', iataCode: 'UKB', portName: 'Kobe Port', country: 'Japan', stateCode: 'HYG', stateName: 'Hyogo', cityName: 'Kobe', timeZone: 'Asia/Tokyo', latitude: '34.6901', longitude: '135.1955', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+                { unlocoCode: 'JPKAN', iataCode: 'KAN', portName: 'Kanazawa Port', country: 'Japan', stateCode: 'ISH', stateName: 'Ishikawa', cityName: 'Kanazawa', timeZone: 'Asia/Tokyo', latitude: '36.5613', longitude: '136.6562', isActive: true, ianaCode: 'Asia/Tokyo', utcOffset: '+09:00' },
+
+                // Other Asian Countries (7 ports)
+                { unlocoCode: 'SGSIN', iataCode: 'SIN', portName: 'Singapore Port', country: 'Singapore', stateCode: 'SG', stateName: 'Singapore', cityName: 'Singapore', timeZone: 'Asia/Singapore', latitude: '1.3521', longitude: '103.8198', isActive: true, ianaCode: 'Asia/Singapore', utcOffset: '+08:00' },
+                { unlocoCode: 'THBKK', iataCode: 'BKK', portName: 'Bangkok Port', country: 'Thailand', stateCode: 'TH', stateName: 'Bangkok', cityName: 'Bangkok', timeZone: 'Asia/Bangkok', latitude: '13.7563', longitude: '100.5018', isActive: true, ianaCode: 'Asia/Bangkok', utcOffset: '+07:00' },
+                { unlocoCode: 'IDJKT', iataCode: 'CGK', portName: 'Jakarta Port', country: 'Indonesia', stateCode: 'JK', stateName: 'Jakarta', cityName: 'Jakarta', timeZone: 'Asia/Jakarta', latitude: '-6.2088', longitude: '106.8456', isActive: true, ianaCode: 'Asia/Jakarta', utcOffset: '+07:00' },
+                { unlocoCode: 'VNSGN', iataCode: 'SGN', portName: 'Ho Chi Minh Port', country: 'Vietnam', stateCode: 'VN', stateName: 'Ho Chi Minh', cityName: 'Ho Chi Minh', timeZone: 'Asia/Ho_Chi_Minh', latitude: '10.8231', longitude: '106.6297', isActive: true, ianaCode: 'Asia/Ho_Chi_Minh', utcOffset: '+07:00' },
+                { unlocoCode: 'PHMNL', iataCode: 'MNL', portName: 'Manila Port', country: 'Philippines', stateCode: 'PH', stateName: 'Metro Manila', cityName: 'Manila', timeZone: 'Asia/Manila', latitude: '14.5995', longitude: '120.9842', isActive: true, ianaCode: 'Asia/Manila', utcOffset: '+08:00' },
+                { unlocoCode: 'INBOM', iataCode: 'BOM', portName: 'Mumbai Port', country: 'India', stateCode: 'MH', stateName: 'Maharashtra', cityName: 'Mumbai', timeZone: 'Asia/Kolkata', latitude: '19.0760', longitude: '72.8777', isActive: true, ianaCode: 'Asia/Kolkata', utcOffset: '+05:30' }
+            ];
+            
+            filteredTimezones = [...allTimezones];
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search button
+            document.getElementById('searchBtn').addEventListener('click', performSearch);
+            
+            // Clear all button
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', function() {
+                    console.log('Clear & Reset button clicked');
+                    
+                    // Clear all selected values
+                    Object.keys(selectedValues).forEach(key => {
+                        selectedValues[key] = [];
+                    });
+                    
+                    // Update input displays
+                    ['country', 'city', 'unloco', 'iata'].forEach(type => {
+                        updateInputDisplay(type);
+                    });
+                    
+                    // Reset to show all data
+                    filteredTimezones = [...allTimezones];
+                    currentPage = 1;
+                    updateTable();
+                    updatePagination();
+                    
+                    // Update UI state
+                    updateSelectedSummary();
+                    updateClearAllButton();
+                    hideSearchStatus();
+                    
+                    console.log('All search criteria cleared, data reset to initial state');
+                });
+            }
+            
+            // Pagination buttons
+            document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
+            document.getElementById('nextPage').addEventListener('click', () => changePage(1));
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.relative')) {
+                    closeAllDropdowns();
+                }
+            });
+        }
+
+        // Show dropdown
+        function showDropdown(type) {
+            closeAllDropdowns();
+            const dropdown = document.getElementById(type + 'Dropdown');
+            if (dropdown) {
+                dropdown.classList.remove('hidden');
+                // Populate with all options when first shown
+                populateDropdownOptions(type);
+            }
+        }
+
+        // Hide dropdown
+        function hideDropdown(type) {
+            const dropdown = document.getElementById(type + 'Dropdown');
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        // Close all dropdowns
+        function closeAllDropdowns() {
+            document.querySelectorAll('[id$="Dropdown"]').forEach(dropdown => {
+                dropdown.classList.add('hidden');
+            });
+        }
+
+        // Populate dropdown options based on data
+        function populateDropdownOptions(type) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            if (!optionsContainer) return;
+
+            let uniqueValues = [];
+            let fieldName = '';
+
+            switch(type) {
+                case 'country':
+                    fieldName = 'country';
+                    break;
+                case 'city':
+                    fieldName = 'cityName';
+                    break;
+                case 'unloco':
+                    fieldName = 'unlocoCode';
+                    break;
+                case 'iata':
+                    fieldName = 'iataCode';
+                    break;
+                default:
+                    return;
+            }
+
+            // Get unique values from data
+            uniqueValues = [...new Set(allTimezones.map(item => item[fieldName]))].sort();
+
+            // Clear existing options
+            optionsContainer.innerHTML = '';
+
+            // Add options
+            uniqueValues.forEach(value => {
+                const option = document.createElement('div');
+                option.className = 'p-2 hover:bg-white/10 rounded cursor-pointer transition-colors';
+                option.textContent = value;
+                option.onclick = () => selectOption(type, value);
+                optionsContainer.appendChild(option);
+            });
+        }
+
+        // Filter dropdown options based on user input
+        function filterDropdownOptions(type, searchText) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            if (!optionsContainer) return;
+
+            let uniqueValues = [];
+            let fieldName = '';
+
+            switch(type) {
+                case 'country':
+                    fieldName = 'country';
+                    break;
+                case 'city':
+                    fieldName = 'cityName';
+                    break;
+                case 'unloco':
+                    fieldName = 'unlocoCode';
+                    break;
+                case 'iata':
+                    fieldName = 'iataCode';
+                    break;
+                default:
+                    return;
+            }
+
+            // Get unique values from data
+            uniqueValues = [...new Set(allTimezones.map(item => item[fieldName]))].sort();
+
+            // Filter based on search text with improved matching
+            if (searchText.trim() !== '') {
+                const searchLower = searchText.toLowerCase();
+                uniqueValues = uniqueValues.filter(value => {
+                    const valueLower = value.toLowerCase();
+                    // Check if the value starts with the search text (priority)
+                    if (valueLower.startsWith(searchLower)) {
+                        return true;
+                    }
+                    // Check if the value contains the search text
+                    if (valueLower.includes(searchLower)) {
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            // Clear existing options
+            optionsContainer.innerHTML = '';
+
+            // Add filtered options with highlighting
+            if (uniqueValues.length > 0) {
+                uniqueValues.forEach(value => {
+                    const option = document.createElement('div');
+                    option.className = 'p-2 hover:bg-white/10 rounded cursor-pointer transition-colors';
+                    
+                    // Highlight matching text
+                    if (searchText.trim() !== '') {
+                        const searchLower = searchText.toLowerCase();
+                        const valueLower = value.toLowerCase();
+                        let highlightedValue = value;
+                        
+                        if (valueLower.startsWith(searchLower)) {
+                            // Highlight the starting part
+                            const matchLength = searchText.length;
+                            highlightedValue = `<span class="text-blue-400 font-semibold">${value.substring(0, matchLength)}</span>${value.substring(matchLength)}`;
+                        } else if (valueLower.includes(searchLower)) {
+                            // Highlight the matching part
+                            const matchIndex = valueLower.indexOf(searchLower);
+                            const matchLength = searchText.length;
+                            highlightedValue = `${value.substring(0, matchIndex)}<span class="text-blue-400 font-semibold">${value.substring(matchIndex, matchIndex + matchLength)}</span>${value.substring(matchIndex + matchLength)}`;
+                        }
+                        
+                        option.innerHTML = highlightedValue;
+                    } else {
+                        option.textContent = value;
+                    }
+                    
+                    option.onclick = () => selectOption(type, value);
+                    optionsContainer.appendChild(option);
+                });
+                
+                // Show dropdown if not already visible
+                const dropdown = document.getElementById(type + 'Dropdown');
+                if (dropdown && dropdown.classList.contains('hidden')) {
+                    showDropdown(type);
+                }
+            } else {
+                // Show "No options found" message
+                const noOption = document.createElement('div');
+                noOption.className = 'p-2 text-gray-400 text-center italic';
+                noOption.textContent = 'No options found';
+                optionsContainer.appendChild(noOption);
+                
+                // Show dropdown if not already visible
+                const dropdown = document.getElementById(type + 'Dropdown');
+                if (dropdown && dropdown.classList.contains('hidden')) {
+                    showDropdown(type);
+                }
+            }
+        }
+
+        // Select an option from dropdown with multi-select support
+        function selectOption(type, value) {
+            // Add value to selected values
+            addSelectedValue(type, value);
+            
+            // Clear input field
+            const input = document.getElementById(type + (type === 'unloco' ? 'Code' : type === 'iata' ? 'Code' : 'Input'));
+            if (input) {
+                input.value = '';
+            }
+            
+            // Hide dropdown
+            hideDropdown(type);
+        }
+
+        // Perform search with multi-select support
+        function performSearch() {
+            // Show searching status
+            showSearchStatus('searching');
+            
+            // Get selected values for each field
+            const selectedCountries = selectedValues.country;
+            const selectedCities = selectedValues.city;
+            const selectedUnlocos = selectedValues.unloco;
+            const selectedIatas = selectedValues.iata;
+            
+            // Filter timezones based on selected values
+            filteredTimezones = allTimezones.filter(timezone => {
+                // Country match - if countries are selected, timezone must match one of them
+                const countryMatch = selectedCountries.length === 0 || 
+                    selectedCountries.some(country => 
+                        timezone.country.toLowerCase().includes(country.toLowerCase())
+                    );
+                
+                // City match - if cities are selected, timezone must match one of them
+                const cityMatch = selectedCities.length === 0 || 
+                    selectedCities.some(city => 
+                        timezone.cityName.toLowerCase().includes(city.toLowerCase())
+                    );
+                
+                // UNLOCO match - if UNLOCOs are selected, timezone must match one of them
+                const unlocoMatch = selectedUnlocos.length === 0 || 
+                    selectedUnlocos.some(unloco => 
+                        timezone.unlocoCode.includes(unloco.toUpperCase())
+                    );
+                
+                // IATA match - if IATAs are selected, timezone must match one of them
+                const iataMatch = selectedIatas.length === 0 || 
+                    selectedIatas.some(iata => 
+                        timezone.iataCode.includes(iata.toUpperCase())
+                    );
+                
+                // All conditions must be true (AND logic)
+                return countryMatch && cityMatch && unlocoMatch && iataMatch;
+            });
+            
+            // Update search stats
+            searchStats.filteredRecords = filteredTimezones.length;
+            searchStats.totalRecords = allTimezones.length;
+            
+            // Update display
+            currentPage = 1;
+            updateTable();
+            updatePagination();
+            
+            // Show search result status
+            if (filteredTimezones.length === 0) {
+                showSearchStatus('no-results');
+            } else {
+                showSearchStatus('success', filteredTimezones.length);
+            }
+            
+            // Hide status after 3 seconds
+            setTimeout(() => {
+                hideSearchStatus();
+            }, 3000);
+        }
+
+        // Reset search with multi-select support
+        function resetSearch() {
+            // Clear all selected values
+            Object.keys(selectedValues).forEach(key => {
+                selectedValues[key] = [];
+                updateSelectedValuesDisplay(key);
+            });
+            
+            // Clear input fields
+            document.getElementById('countryInput').value = '';
+            document.getElementById('cityInput').value = '';
+            document.getElementById('unlocoCode').value = '';
+            document.getElementById('iataCode').value = '';
+            
+            // Close all dropdowns
+            closeAllDropdowns();
+            
+            // Reset to show all data
+            filteredTimezones = [...allTimezones];
+            currentPage = 1;
+            updateTable();
+            updatePagination();
+            
+            // Update UI state
+            updateSelectedSummary();
+            updateClearAllButton();
+            hideSearchStatus();
+        }
+
+        // Update table
+        function updateTable() {
+            const tbody = document.getElementById('timezoneTableBody');
+            tbody.innerHTML = '';
+            
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = startIndex + recordsPerPage;
+            const currentPageData = filteredTimezones.slice(startIndex, endIndex);
+            
+            currentPageData.forEach(timezone => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-white/10 hover:bg-white/5 transition-colors';
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3 text-sm font-medium text-white">${timezone.unlocoCode}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.iataCode}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.portName}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.country}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.stateCode}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.stateName}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.cityName}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.timeZone}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.latitude}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.longitude}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${timezone.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${timezone.isActive ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.ianaCode}</td>
+                    <td class="px-4 py-3 text-sm text-gray-300">${timezone.utcOffset}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <button onclick="viewDetails('${timezone.unlocoCode}')" class="text-blue-400 hover:text-blue-300 transition-colors" title="View Details">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalRecords = filteredTimezones.length;
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            const startRecord = (currentPage - 1) * recordsPerPage + 1;
+            const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
+            
+            document.getElementById('totalRecords').textContent = totalRecords;
+            document.getElementById('totalRecordsPagination').textContent = totalRecords;
+            document.getElementById('startRecord').textContent = startRecord;
+            document.getElementById('endRecord').textContent = endRecord;
+            document.getElementById('currentPage').textContent = currentPage;
+            document.getElementById('totalPages').textContent = totalPages;
+            
+            // Update pagination buttons
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            if (currentPage === 1) {
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            if (currentPage === totalPages) {
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Change page
+        function changePage(delta) {
+            const newPage = currentPage + delta;
+            const totalPages = Math.ceil(filteredTimezones.length / recordsPerPage);
+            
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                updateTable();
+                updatePagination();
+            }
+        }
+
+        // View details (placeholder function)
+        function viewDetails(unlocoCode) {
+            alert(`View details for ${unlocoCode} - This is a prototype demonstration.`);
+        }
+
+
+
+        // Toggle multi-select dropdown
+        function toggleMultiDropdown(type) {
+            const dropdown = document.getElementById(type + 'Dropdown');
+            const allDropdowns = document.querySelectorAll('[id$="Dropdown"]');
+            
+            // Close all other dropdowns
+            allDropdowns.forEach(dd => {
+                if (dd.id !== type + 'Dropdown') {
+                    dd.classList.add('hidden');
+                }
+            });
+            
+            // Toggle current dropdown
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                populateMultiOptions(type);
+            } else {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        // Populate multi-select options
+        function populateMultiOptions(type) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            const uniqueValues = getUniqueValues(type);
+            
+            optionsContainer.innerHTML = '';
+            
+            uniqueValues.forEach(value => {
+                const isSelected = selectedValues[type].includes(value);
+                const optionDiv = document.createElement('div');
+                optionDiv.className = `flex items-center justify-between p-2 hover:bg-white/10 rounded cursor-pointer ${isSelected ? 'bg-blue-600/20' : ''}`;
+                optionDiv.onclick = () => toggleOption(type, value);
+                
+                optionDiv.innerHTML = `
+                    <span class="text-white">${value}</span>
+                    ${isSelected ? '<i class="fas fa-check text-blue-400"></i>' : ''}
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        // Get unique values for each field type
+        function getUniqueValues(type) {
+            const values = new Set();
+            
+            // Use the global allTimezones data
+            if (window.allTimezones && window.allTimezones.length > 0) {
+                window.allTimezones.forEach(item => {
+                    switch(type) {
+                        case 'country':
+                            if (item.country) values.add(item.country);
+                            break;
+                        case 'city':
+                            if (item.cityName) values.add(item.cityName);
+                            break;
+                        case 'unloco':
+                            if (item.unlocoCode) values.add(item.unlocoCode);
+                            break;
+                        case 'iata':
+                            if (item.iataCode) values.add(item.iataCode);
+                            break;
+                    }
+                });
+            }
+            
+            const result = Array.from(values).sort();
+            console.log(`Unique values for ${type}:`, result);
+            return result;
+        }
+
+        // Toggle option selection
+        function toggleOption(type, value) {
+            const index = selectedValues[type].indexOf(value);
+            
+            if (index > -1) {
+                selectedValues[type].splice(index, 1);
+                console.log(`Removed ${value} from ${type}`);
+            } else {
+                selectedValues[type].push(value);
+                console.log(`Added ${value} to ${type}`);
+            }
+            
+            updateInputDisplay(type);
+            populateMultiOptions(type);
+            
+            // Update UI state after selection change
+            updateSelectedSummary();
+            updateClearAllButton();
+        }
+
+        // Update input display with selected values
+        function updateInputDisplay(type) {
+            const input = document.getElementById(type + 'Input');
+            const values = selectedValues[type];
+            
+            if (values.length === 0) {
+                input.innerHTML = '<span class="text-gray-400">Select ' + getFieldLabel(type) + '...</span>';
+            } else {
+                input.innerHTML = values.map(value => 
+                    `<span class="inline-flex items-center px-2 py-1 bg-blue-600/20 text-blue-300 text-sm rounded-full mr-1">
+                        ${value}
+                        <button onclick="removeOption('${type}', '${value}')" class="ml-2 text-blue-400 hover:text-blue-300">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>`
+                ).join('');
+            }
+        }
+
+        // Get field label for display
+        function getFieldLabel(type) {
+            const labels = {
+                country: 'Country/Region',
+                city: 'City',
+                unloco: 'UNLOCO Code',
+                iata: 'IATA Code'
+            };
+            return labels[type] || type;
+        }
+
+        // Remove option from selection
+        function removeOption(type, value) {
+            const index = selectedValues[type].indexOf(value);
+            if (index > -1) {
+                selectedValues[type].splice(index, 1);
+                updateInputDisplay(type);
+                populateMultiOptions(type);
+                
+                // Update UI state after removal
+                updateSelectedSummary();
+                updateClearAllButton();
+            }
+        }
+
+        // Select all options
+        function selectAllOptions(type) {
+            const uniqueValues = getUniqueValues(type);
+            selectedValues[type] = [...uniqueValues];
+            updateInputDisplay(type);
+            populateMultiOptions(type);
+            
+            // Update UI state after selection
+            updateSelectedSummary();
+            updateClearAllButton();
+        }
+
+        // Filter options based on search input
+        function filterMultiOptions(type, searchTerm) {
+            const optionsContainer = document.getElementById(type + 'Options');
+            const uniqueValues = getUniqueValues(type);
+            const filteredValues = uniqueValues.filter(value => 
+                value.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            optionsContainer.innerHTML = '';
+            
+            filteredValues.forEach(value => {
+                const isSelected = selectedValues[type].includes(value);
+                const optionDiv = document.createElement('div');
+                optionDiv.className = `flex items-center justify-between p-2 hover:bg-white/10 rounded cursor-pointer ${isSelected ? 'bg-blue-600/20' : ''}`;
+                optionDiv.onclick = () => toggleOption(type, value);
+                
+                optionDiv.innerHTML = `
+                    <span class="text-white">${value}</span>
+                    ${isSelected ? '<i class="fas fa-check text-blue-400"></i>' : ''}
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        // Close all dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdowns = document.querySelectorAll('[id$="Dropdown"]');
+            const inputs = document.querySelectorAll('[id$="Input"]');
+            
+            let clickedInside = false;
+            
+            dropdowns.forEach(dropdown => {
+                if (dropdown.contains(event.target)) {
+                    clickedInside = true;
+                }
+            });
+            
+            inputs.forEach(input => {
+                if (input.contains(event.target)) {
+                    clickedInside = true;
+                }
+            });
+            
+            if (!clickedInside) {
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.add('hidden');
+                });
+            }
+        });
+
+        // Debug function to check dropdown options
+        function debugDropdownOptions() {
+            console.log('=== Debug Dropdown Options ===');
+            ['country', 'city', 'unloco', 'iata'].forEach(type => {
+                const options = getUniqueValues(type);
+                console.log(`${type}: ${options.length} options -`, options);
+            });
+            console.log('=== End Debug ===');
+        }
+
+        // Verify dropdown options match table columns
+        function verifyDropdownOptions() {
+            console.log('=== Verifying Dropdown Options Match Table Columns ===');
+            
+            if (!window.allTimezones || window.allTimezones.length === 0) {
+                console.error('No data available for verification');
+                return;
+            }
+            
+            // Check each field type
+            const fieldMappings = {
+                'country': 'Country/Region column',
+                'city': 'City Name column', 
+                'unloco': 'UNLOCO Code column',
+                'iata': 'IATA Code column'
+            };
+            
+            Object.entries(fieldMappings).forEach(([type, columnName]) => {
+                const options = getUniqueValues(type);
+                const sampleData = window.allTimezones.slice(0, 5); // Check first 5 records
+                
+                console.log(`\n${columnName} (${type}):`);
+                console.log(`- Dropdown options: ${options.length} unique values`);
+                console.log(`- Sample data values:`, sampleData.map(item => {
+                    switch(type) {
+                        case 'country': return item.country;
+                        case 'city': return item.cityName;
+                        case 'unloco': return item.unlocoCode;
+                        case 'iata': return item.iataCode;
+                        default: return 'unknown';
+                    }
+                }));
+                console.log(`- All unique options:`, options);
+            });
+            
+            console.log('\n=== Verification Complete ===');
+        }
+
+        // Basic functionality
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const arrow = document.getElementById(menuId + '-arrow');
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        // Navigate to Home page
+        function goToHome(event) {
+            event.preventDefault();
+            console.log('Navigating to Home page...');
+            
+            // Force immediate navigation without any effects
+            try {
+                // Method 1: Direct assignment
+                window.location = 'dashboard.html';
+                
+                // Method 2: If above doesn't work, try replace
+                setTimeout(() => {
+                    if (window.location.pathname !== '/dashboard.html') {
+                        window.location.replace('dashboard.html');
+                    }
+                }, 10);
+                
+                // Method 3: Last resort - open in same window
+                setTimeout(() => {
+                    if (window.location.pathname !== '/dashboard.html') {
+                        window.open('dashboard.html', '_self');
+                    }
+                }, 50);
+                
+            } catch (error) {
+                console.error('Navigation error:', error);
+                // Fallback to simple href
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        // Page initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Time Zone Management page loaded');
+            
+            // Initialize the page
+            initializePage();
+        });
+
+        // Initialize page function
+        function initializePage() {
+            console.log('Initializing Time Zone Management page');
+            
+            // Load sample data first
+            const sampleData = loadSampleData();
+            console.log('Sample data loaded, count:', sampleData.length);
+            
+            // Wait a bit for data to be fully processed, then initialize dropdowns
+            setTimeout(() => {
+                initializeMultiSelects();
+                console.log('Multi-select dropdowns initialized after data load');
+                
+                // Debug dropdown options after initialization
+                debugDropdownOptions();
+                
+                // Verify dropdown options match table columns
+                verifyDropdownOptions();
+            }, 100);
+            
+            console.log('Page initialization completed');
+        }
+
+        // Initialize multi-select dropdowns
+        function initializeMultiSelects() {
+            console.log('Initializing multi-select dropdowns');
+            
+            // Verify data is available
+            if (!window.allTimezones || window.allTimezones.length === 0) {
+                console.error('No timezone data available for dropdown initialization');
+                return;
+            }
+            
+            // Set up initial display for all inputs
+            ['country', 'city', 'unloco', 'iata'].forEach(type => {
+                updateInputDisplay(type);
+                console.log(`Initialized ${type} dropdown with ${getUniqueValues(type).length} options`);
+            });
+            
+            console.log('Multi-select dropdowns initialized successfully');
+        }
+
+        // Load sample data
+        function loadSampleData() {
+            console.log('Loading sample data');
+            
+            // Generate sample timezone data
+            const sampleData = generateSampleData();
+            
+            // Update global data - make it globally accessible
+            window.allTimezones = sampleData;
+            window.filteredTimezones = [...sampleData];
+            
+            // Update table
+            updateTable();
+            
+            // Update pagination
+            updatePagination();
+            
+            console.log('Sample data loaded:', sampleData.length, 'records');
+            
+            // Return the data for immediate use
+            return sampleData;
+        }
+
+        // Generate sample timezone data
+        function generateSampleData() {
+            const data = [];
+            
+            // Sample data matching the table columns exactly
+            const sampleEntries = [
+                { unlocoCode: 'CNSHA', iataCode: 'SHA', portName: 'Shanghai Port', country: 'China', stateCode: 'SH', stateName: 'Shanghai', cityName: 'Shanghai', timeZone: 'Asia/Shanghai', latitude: '31.2304', longitude: '121.4737', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNPEK', iataCode: 'PEK', portName: 'Beijing Port', country: 'China', stateCode: 'BJ', stateName: 'Beijing', cityName: 'Beijing', timeZone: 'Asia/Shanghai', latitude: '39.9042', longitude: '116.4074', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNGZ', iataCode: 'CAN', portName: 'Guangzhou Port', country: 'China', stateCode: 'GD', stateName: 'Guangdong', cityName: 'Guangzhou', timeZone: 'Asia/Shanghai', latitude: '23.1291', longitude: '113.2644', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNXM', iataCode: 'XMN', portName: 'Xiamen Port', country: 'China', stateCode: 'FJ', stateName: 'Fujian', cityName: 'Xiamen', timeZone: 'Asia/Shanghai', latitude: '24.4798', longitude: '118.0894', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNQD', iataCode: 'TAO', portName: 'Qingdao Port', country: 'China', stateCode: 'SD', stateName: 'Shandong', cityName: 'Qingdao', timeZone: 'Asia/Shanghai', latitude: '36.0671', longitude: '120.3826', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNNGB', iataCode: 'NGB', portName: 'Ningbo Port', country: 'China', stateCode: 'ZJ', stateName: 'Zhejiang', cityName: 'Ningbo', timeZone: 'Asia/Shanghai', latitude: '29.8683', longitude: '121.5440', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNSZX', iataCode: 'SZX', portName: 'Shenzhen Port', country: 'China', stateCode: 'GD', stateName: 'Guangdong', cityName: 'Shenzhen', timeZone: 'Asia/Shanghai', latitude: '22.5431', longitude: '114.0579', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNTXG', iataCode: 'TSN', portName: 'Tianjin Port', country: 'China', stateCode: 'TJ', stateName: 'Tianjin', cityName: 'Tianjin', timeZone: 'Asia/Shanghai', latitude: '39.0842', longitude: '117.2009', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNDLC', iataCode: 'DLC', portName: 'Dalian Port', country: 'China', stateCode: 'LN', stateName: 'Liaoning', cityName: 'Dalian', timeZone: 'Asia/Shanghai', latitude: '38.9140', longitude: '121.6147', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNYNT', iataCode: 'YNT', portName: 'Yantai Port', country: 'China', stateCode: 'SD', stateName: 'Shandong', cityName: 'Yantai', timeZone: 'Asia/Shanghai', latitude: '37.4641', longitude: '121.4479', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNFOC', iataCode: 'FOC', portName: 'Fuzhou Port', country: 'China', stateCode: 'FJ', stateName: 'Fujian', cityName: 'Fuzhou', timeZone: 'Asia/Shanghai', latitude: '26.0745', longitude: '119.2965', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNZJ', iataCode: 'ZHA', portName: 'Zhanjiang Port', country: 'China', stateCode: 'GD', stateName: 'Guangdong', cityName: 'Zhanjiang', timeZone: 'Asia/Shanghai', latitude: '21.2707', longitude: '110.3594', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNLZH', iataCode: 'LZH', portName: 'Liuzhou Port', country: 'China', stateCode: 'GX', stateName: 'Guangxi', cityName: 'Liuzhou', timeZone: 'Asia/Shanghai', latitude: '24.3146', longitude: '109.4158', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNWUH', iataCode: 'WUH', portName: 'Wuhan Port', country: 'China', stateCode: 'HB', stateName: 'Hubei', cityName: 'Wuhan', timeZone: 'Asia/Shanghai', latitude: '30.5928', longitude: '114.3055', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' },
+                { unlocoCode: 'CNCKG', iataCode: 'CKG', portName: 'Chongqing Port', country: 'China', stateCode: 'CQ', stateName: 'Chongqing', cityName: 'Chongqing', timeZone: 'Asia/Shanghai', latitude: '29.4316', longitude: '106.9123', isActive: true, ianaCode: 'Asia/Shanghai', utcOffset: '+08:00' }
+            ];
+            
+            // Add the sample entries
+            data.push(...sampleEntries);
+            
+            // Generate additional random data to reach 50 records
+            const countries = ['China', 'USA', 'Germany', 'Japan', 'UK', 'France', 'Canada', 'Australia', 'Singapore', 'South Korea'];
+            const cities = ['Shanghai', 'New York', 'Berlin', 'Tokyo', 'London', 'Paris', 'Toronto', 'Sydney', 'Singapore', 'Seoul'];
+            const unlocoCodes = ['CNSHA', 'USNYC', 'DEBER', 'JPTYO', 'GBLON', 'FRPAR', 'CATOR', 'AUSYD', 'SGSIN', 'KRICN'];
+            const iataCodes = ['PVG', 'JFK', 'BER', 'NRT', 'LHR', 'CDG', 'YYZ', 'SYD', 'SIN', 'ICN'];
+            
+            for (let i = sampleEntries.length; i < 50; i++) {
+                const countryIndex = i % countries.length;
+                const cityIndex = i % cities.length;
+                const unlocoIndex = i % unlocoCodes.length;
+                const iataIndex = i % iataCodes.length;
+                
+                data.push({
+                    unlocoCode: unlocoCodes[unlocoIndex],
+                    iataCode: iataCodes[iataIndex],
+                    portName: `Port ${i + 1}`,
+                    country: countries[countryIndex],
+                    stateCode: `ST${i % 10}`,
+                    stateName: `State ${i % 10}`,
+                    cityName: cities[cityIndex],
+                    timeZone: `UTC+${(i % 12) - 6}`,
+                    latitude: `${(i % 90)}.${i % 60}`,
+                    longitude: `${(i % 180) - 90}.${i % 60}`,
+                    isActive: i % 3 !== 0,
+                    ianaCode: `Zone${i + 1}`,
+                    utcOffset: `${(i % 12) - 6}:00`
+                });
+            }
+            
+            return data;
+        }
+    </script>
+</body>
+</html>

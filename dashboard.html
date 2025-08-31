@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Supply Chain Control Tower Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#0f172a',
+                        accent: '#06b6d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        error: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Ensure proper layout alignment and prevent sliding effects */
+        .w-64 {
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            left: 0 !important;
+            margin-left: 0 !important;
+        }
+        
+        .flex-1 {
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+        
+        /* Global prevention of animations */
+        * {
+            animation: none !important;
+        }
+        
+        /* Ensure flexbox layout is stable */
+        .flex {
+            display: flex !important;
+        }
+        
+        /* Prevent any sliding or movement */
+        body, html {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+
+    <div class="relative z-10 flex h-screen">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 bg-white/10 backdrop-blur-lg border-r border-white/20 flex flex-col">
+            <!-- Logo and Title -->
+            <div class="p-6 border-b border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tower-broadcast text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">
+                            Supply Chain
+                        </h1>
+                        <p class="text-xs text-gray-400">
+                            Control Tower
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-4 space-y-2">
+                <!-- Home -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 bg-blue-600/20 border border-blue-500/30 rounded-lg text-blue-300">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="font-medium">Home</span>
+                </a>
+
+                <!-- Dashboard -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('dashboard')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-line text-lg"></i>
+                            <span class="font-medium">Dashboard</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="dashboard-arrow"></i>
+                    </button>
+                    <div id="dashboard-submenu" class="hidden pl-8 space-y-1">
+                        <a href="operations-dashboard.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Operations Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Operations Report -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('reports')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-file-alt text-lg"></i>
+                            <span class="font-medium">Operations Report</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="reports-arrow"></i>
+                    </button>
+                    <div id="reports-submenu" class="hidden pl-8 space-y-1">
+                        <a href="ocean-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Ocean Booking Report
+                        </a>
+                        <a href="air-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Air Booking Report
+                        </a>
+                    </div>
+                </div>
+
+                <!-- System -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('system')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-cog text-lg"></i>
+                            <span class="font-medium">System</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="system-arrow"></i>
+                    </button>
+                    <div id="system-submenu" class="hidden pl-8 space-y-1">
+                        <a href="user-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            User Management
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Basic Data -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg" onclick="toggleSubmenu('basic')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-database text-lg"></i>
+                            <span class="font-medium">Basic Data</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm" id="basic-arrow"></i>
+                    </button>
+                    <div id="basic-submenu" class="hidden pl-8 space-y-1">
+                        <a href="timezone-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded">
+                            Time Zone
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="p-4 border-t border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-white">admin</p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-1 bg-red-600/20 border border-red-500/30 text-red-300 rounded-lg hover:bg-red-600/30 text-sm">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="bg-white/10 backdrop-blur-lg border-b border-white/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">
+                            Welcome to Supply Chain Control Tower
+                        </h2>
+                        <p class="text-gray-400">
+                            Manage your supply chain operations efficiently
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Header actions removed as requested -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-auto">
+                <!-- Content area is intentionally left blank as requested -->
+            </main>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Submenu toggle functionality
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const arrow = document.getElementById(menuId + '-arrow');
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Initialize page without animations
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard page loaded without animations');
+            
+            // Ensure sidebar and main content are properly positioned
+            const sidebar = document.querySelector('.w-64');
+            const mainContent = document.querySelector('.flex-1');
+            
+            // Reset any transforms and ensure proper positioning
+            if (sidebar) {
+                sidebar.style.transform = 'none';
+                sidebar.style.transition = 'none';
+            }
+            
+            if (mainContent) {
+                mainContent.style.opacity = '1';
+                mainContent.style.transition = 'none';
+            }
+        });
+
+        // Logout function
+        function logout() {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

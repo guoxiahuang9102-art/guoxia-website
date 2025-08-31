@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations Dashboard - Supply Chain Control Tower Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#0f172a',
+                        accent: '#06b6d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        error: '#ef4444',
+                        ocean: '#0ea5e9',
+                        air: '#8b5cf6'
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+
+    <div class="relative z-10 flex h-screen">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 bg-white/10 backdrop-blur-lg border-r border-white/20 flex flex-col">
+            <!-- Logo and Title -->
+            <div class="p-6 border-b border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-tower-broadcast text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">
+                            Supply Chain
+                        </h1>
+                        <p class="text-xs text-gray-400">
+                            Control Tower
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-4 space-y-2">
+                <!-- Home -->
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="font-medium">Home</span>
+                </a>
+
+                <!-- Dashboard -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 bg-blue-600/20 border border-blue-500/30 rounded-lg text-blue-300 transition-all" onclick="toggleSubmenu('dashboard')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-line text-lg"></i>
+                            <span class="font-medium">Dashboard</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="dashboard-arrow"></i>
+                    </button>
+                    <div id="dashboard-submenu" class="pl-8 space-y-1">
+                        <a href="operations-dashboard.html" class="block px-4 py-2 text-sm text-blue-300 bg-blue-600/20 rounded transition-all">
+                            Operations Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Operations Report -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('reports')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-file-alt text-lg"></i>
+                            <span class="font-medium">Operations Report</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="reports-arrow"></i>
+                    </button>
+                    <div id="reports-submenu" class="hidden pl-8 space-y-1">
+                        <a href="ocean-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Ocean Booking Report
+                        </a>
+                        <a href="air-booking-report.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Air Booking Report
+                        </a>
+                    </div>
+                </div>
+
+                <!-- System -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('system')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-cog text-lg"></i>
+                            <span class="font-medium">System</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="system-arrow"></i>
+                    </button>
+                    <div id="system-submenu" class="hidden pl-8 space-y-1">
+                        <a href="user-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            User Management
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Basic Data -->
+                <div class="space-y-1">
+                    <button class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all" onclick="toggleSubmenu('basic')">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-database text-lg"></i>
+                            <span class="font-medium">Basic Data</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform" id="basic-arrow"></i>
+                    </button>
+                    <div id="basic-submenu" class="hidden pl-8 space-y-1">
+                        <a href="timezone-management.html" class="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/10 rounded transition-all">
+                            Time Zone
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="p-4 border-t border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-white">admin</p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-1 bg-red-600/20 border border-red-500/30 text-red-300 rounded-lg hover:bg-red-600/30 transition-all text-sm">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="bg-white/10 backdrop-blur-lg border-b border-white/20 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Operations Dashboard</h2>
+                        <p class="text-gray-400">Monitor supply chain operations performance and KPIs</p>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-auto">
+                <!-- Dashboard Overview -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Ocean Bookings Section -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
+                        <!-- Section Header -->
+                        <div class="bg-gradient-to-r from-ocean/20 to-blue-600/20 p-6 border-b border-white/20">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-ocean to-blue-600 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-ship text-white text-xl"></i>
+                        </div>
+                        <div>
+                                        <h3 class="text-xl font-bold text-white">Overall On-Time Rate: 95%</h3>
+                        </div>
+                        </div>
+                                <div class="text-right">
+                                    <div class="text-sm text-gray-300 mb-1">Date Range</div>
+                                    <div class="text-sm text-white" id="oceanDateRange">2025/8/1 - 2025/8/31</div>
+                                    <button onclick="openDatePicker('ocean')" class="text-xs text-blue-400 hover:text-blue-300 mt-1 cursor-pointer">
+                                        <i class="fas fa-calendar-alt mr-1"></i>Change
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                                                <!-- Ocean Chart and Table -->
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 gap-6">
+                                <!-- Chart -->
+                                <div class="flex flex-col">
+                                    <h4 class="text-lg font-semibold text-white mb-4">Ocean Node Entry Timeliness</h4>
+                                    <div class="h-64 flex-1 relative" id="oceanChartContainer">
+                                        <canvas id="oceanTimelinessChart"></canvas>
+                                        
+                        </div>
+                                </div>
+
+                                <!-- Table -->
+                                <div class="flex flex-col">
+                                    <h4 class="text-lg font-semibold text-white mb-4">Ocean Carrier Node Timeliness Performance</h4>
+                                    <div class="overflow-y-auto max-h-64 border border-white/20 rounded-lg">
+                            <table class="w-full">
+                                            <thead class="sticky top-0 bg-slate-800/80 backdrop-blur-sm">
+                                    <tr class="border-b border-white/20">
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-gray-300">3PL</th>
+                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-300">Nodes Qty</th>
+                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-300">Timeliness Rate</th>
+                                    </tr>
+                                </thead>
+                                                                                        <tbody id="oceanTableBody" class="text-white">
+                                                <!-- Sample data rows with 3PL drill-down functionality -->
+                                                <tr class="border-b border-white/10 hover:bg-ocean/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">3PL</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">17</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">53%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-ocean/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">HA</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">16</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">50%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-ocean/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">HC</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">16</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">50%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-ocean/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">CEVA</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">17</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">47%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-ocean/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">WANHAI</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">17</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">47%</td>
+                                                </tr>
+                                </tbody>
+                            </table>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- Air Bookings Section -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
+                                                <!-- Section Header -->
+                        <div class="bg-gradient-to-r from-air/20 to-purple-600/20 p-6 border-b border-white/20">
+                        <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-air to-purple-600 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-plane text-white text-xl"></i>
+                                    </div>
+                            <div>
+                                        <h3 class="text-xl font-bold text-white">Overall On-Time Rate: 94%</h3>
+                            </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm text-gray-300 mb-1">Date Range</div>
+                                    <div class="text-sm text-white" id="airDateRange">2025/8/1 - 2025/8/31</div>
+                                    <button onclick="openDatePicker('air')" class="text-xs text-blue-400 hover:text-blue-300 mt-1 cursor-pointer">
+                                        <i class="fas fa-calendar-alt mr-1"></i>Change
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+
+                                                <!-- Air Chart and Table -->
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 gap-6">
+                                                                                                <!-- Chart -->
+                                <div class="flex flex-col">
+                                    <h4 class="text-lg font-semibold text-white mb-4">Air Node Entry Timeliness</h4>
+                                    <div class="h-64 flex-1 relative" id="airChartContainer">
+                                        <canvas id="airTimelinessChart"></canvas>
+                                        
+                        </div>
+                    </div>
+
+                                <!-- Table -->
+                                <div class="flex flex-col">
+                                    <h4 class="text-lg font-semibold text-white mb-4">Air Carrier Node Timeliness Performance</h4>
+                                    <div class="overflow-y-auto max-h-64 border border-white/20 rounded-lg">
+                                        <table class="w-full">
+                                            <thead class="sticky top-0 bg-slate-800/80 backdrop-blur-sm">
+                                                <tr class="border-b border-white/20">
+                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-300">3PL</th>
+                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-300">Nodes Qty</th>
+                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-300">Timeliness Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="airTableBody" class="text-white">
+                                                <!-- Sample data rows with 3PL drill-down functionality -->
+                                                <tr class="border-b border-white/10 hover:bg-air/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">3PL</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">20</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">55%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-air/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">Emirates</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">20</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">50%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-air/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">UPS</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">20</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">50%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-air/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">FedEx</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">20</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">50%</td>
+                                                </tr>
+                                                <tr class="border-b border-white/10 hover:bg-air/10 transition-colors">
+                                                    <td class="py-3 px-4 text-sm text-gray-300">DHL</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">20</td>
+                                                    <td class="py-3 px-4 text-sm text-gray-300">45%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Date Picker Modal -->
+    <div id="datePickerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full max-w-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-white">Select Date Range</h3>
+                    <button onclick="closeDatePicker()" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Start Date</label>
+                        <input type="date" id="startDate" class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">End Date</label>
+                        <input type="date" id="endDate" class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex space-x-3 pt-4">
+                        <button onclick="applyDateRange()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Apply
+                        </button>
+                        <button onclick="closeDatePicker()" class="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let oceanTimelinessChart, airTimelinessChart;
+        let currentModule = '';
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDateRange();
+            initializeCharts();
+            
+            // Initialize ocean and air data with default date range
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            const startDateStr = formatDateForDisplay(thirtyDaysAgo);
+            const endDateStr = formatDateForDisplay(today);
+            
+            updateOceanData(startDateStr, endDateStr);
+            updateAirData(startDateStr, endDateStr);
+        });
+
+        // Initialize date range with default values (current date - 30 days to current date)
+        function initializeDateRange() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            const startDateStr = formatDateForDisplay(thirtyDaysAgo);
+            const endDateStr = formatDateForDisplay(today);
+            
+            document.getElementById('oceanDateRange').textContent = `${startDateStr} - ${endDateStr}`;
+            document.getElementById('airDateRange').textContent = `${startDateStr} - ${endDateStr}`;
+        }
+
+        // Format date for display (YYYY/M/D format)
+        function formatDateForDisplay(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${year}/${month}/${day}`;
+        }
+
+        // Open date picker modal
+        function openDatePicker(module) {
+            currentModule = module;
+            const modal = document.getElementById('datePickerModal');
+            modal.classList.remove('hidden');
+            
+            // Set current values
+            const currentRange = document.getElementById(module + 'DateRange').textContent;
+            const [startStr, endStr] = currentRange.split(' - ');
+            
+            // Convert display format to date input format
+            const startDate = convertDisplayToDate(startStr);
+            const endDate = convertDisplayToDate(endStr);
+            
+            document.getElementById('startDate').value = startDate;
+            document.getElementById('endDate').value = endDate;
+        }
+
+        // Close date picker modal
+        function closeDatePicker() {
+            document.getElementById('datePickerModal').classList.add('hidden');
+        }
+
+        // Convert display format (YYYY/M/D) to date input format (YYYY-MM-DD)
+        function convertDisplayToDate(displayDate) {
+            const [year, month, day] = displayDate.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        // Apply selected date range
+        function applyDateRange() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                
+                if (start > end) {
+                    alert('Start date cannot be later than end date');
+                    return;
+                }
+                
+                const startStr = formatDateForDisplay(start);
+                const endStr = formatDateForDisplay(end);
+                const rangeText = `${startStr} - ${endStr}`;
+                
+                document.getElementById(currentModule + 'DateRange').textContent = rangeText;
+                closeDatePicker();
+                
+                // Update data based on new date range
+                if (currentModule === 'ocean') {
+                    updateOceanData(startDate, endDate);
+                } else if (currentModule === 'air') {
+                    updateAirData(startDate, endDate);
+                }
+                
+                console.log(`Date range changed for ${currentModule}: ${startDate} to ${endDate}`);
+            }
+        }
+
+        // Update ocean data based on date range
+        function updateOceanData(startDate, endDate) {
+            const oceanData = getOceanSampleData();
+            const filteredData = filterOceanDataByDateRange(oceanData, startDate, endDate);
+            
+            // Update chart data
+            updateOceanChartData(filteredData);
+            
+            // Update table data
+            updateOceanTableData(filteredData);
+            
+            // Update overall on-time rate
+            updateOceanOverallRate(filteredData);
+        }
+
+        // Update air data based on date range
+        function updateAirData(startDate, endDate) {
+            const airData = getAirSampleData();
+            const filteredData = filterAirDataByDateRange(airData, startDate, endDate);
+            
+            // Update chart data
+            updateAirChartData(filteredData);
+            
+            // Update table data
+            updateAirTableData(filteredData);
+            
+            // Update overall on-time rate
+            updateAirOverallRate(filteredData);
+        }
+
+        // Get ocean sample data (similar to Ocean Booking Report structure)
+        function getOceanSampleData() {
+            const allData = [];
+            
+            // Generate sample data for 100 records
+            for (let i = 1; i <= 100; i++) {
+                // Generate random date between Aug 1-30, 2025
+                const day = (i % 30) + 1; // 1-30
+                const hour = (i % 24); // 0-23
+                const minute = (i % 60); // 0-59
+                
+                // Format: 2025/8/20 12:00
+                const bookingDate = `2025/8/${day}`;
+                const eventTimeLocal = `2025/8/${day} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                
+                // Generate milestone-specific data
+                const milestone = ['Pickup Date', 'ATD', 'ATA', 'Delivery'][i % 4];
+                let milestoneDate = '';
+                
+                // Set milestone dates based on type
+                switch(milestone) {
+                    case 'Pickup Date':
+                        milestoneDate = `2025/8/${day}`;
+                        break;
+                    case 'ATD':
+                        milestoneDate = `2025/8/${(day + 2) % 30 + 1}`;
+                        break;
+                    case 'ATA':
+                        milestoneDate = `2025/8/${(day + 5) % 30 + 1}`;
+                        break;
+                    case 'Delivery':
+                        milestoneDate = `2025/8/${(day + 7) % 30 + 1}`;
+                        break;
+                }
+                
+                // Generate gap (hours) - some records will have gap < 24 (on-time)
+                const gap = i % 3 === 0 ? (i % 48) : (i % 72); // 1/3 records have gap < 24
+                
+                allData.push({
+                    bookingNo: `OB${i.toString().padStart(3, '0')}`,
+                    milestone: milestone,
+                    milestoneDate: milestoneDate,
+                    eventTimeLocal: eventTimeLocal,
+                    tpl: ['CEVA', 'WANHAI', 'MSK', 'HA', 'HB', 'HC'][i % 6],
+                    gap: gap
+                });
+            }
+            
+            return allData;
+        }
+
+        // Filter ocean data by date range
+        function filterOceanDataByDateRange(data, startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            return data.filter(item => {
+                const itemDate = new Date(item.milestoneDate);
+                return itemDate >= start && itemDate <= end;
+            });
+        }
+
+        // Calculate ocean chart data based on business logic
+        function calculateOceanChartData(filteredData) {
+            const nodes = ['Pickup Date', 'ATD', 'ATA', 'Delivery'];
+            const chartData = [];
+            
+            nodes.forEach(node => {
+                // Denominator: count of records where milestone date is not empty and within date range
+                const denominator = filteredData.filter(item => 
+                    item.milestone === node && item.milestoneDate
+                ).length;
+                
+                if (denominator === 0) {
+                    chartData.push(0);
+                    return;
+                }
+                
+                // Numerator: count of records where gap < 24 hours
+                const numerator = filteredData.filter(item => 
+                    item.milestone === node && 
+                    item.milestoneDate && 
+                    item.gap < 24
+                ).length;
+                
+                // Calculate percentage
+                const percentage = Math.round((numerator / denominator) * 100);
+                chartData.push(percentage);
+            });
+            
+            return chartData;
+        }
+
+        // Calculate ocean table data based on business logic
+        function calculateOceanTableData(filteredData) {
+            // Get unique 3PL codes where Event Time(Local) is not empty
+            const unique3PLs = [...new Set(filteredData
+                .filter(item => item.eventTimeLocal)
+                .map(item => item.tpl)
+            )];
+            
+            const tableData = [];
+            
+            unique3PLs.forEach(tpl => {
+                // Nodes Qty: count of records for this 3PL where Event Time(Local) is not empty
+                const nodesQty = filteredData.filter(item => 
+                    item.tpl === tpl && item.eventTimeLocal
+                ).length;
+                
+                if (nodesQty === 0) return;
+                
+                // Timeliness Rate: count of records where gap < 24 hours
+                const onTimeCount = filteredData.filter(item => 
+                    item.tpl === tpl && 
+                    item.eventTimeLocal && 
+                    item.gap < 24
+                ).length;
+                
+                const timelinessRate = Math.round((onTimeCount / nodesQty) * 100);
+                
+                tableData.push({
+                    tpl: tpl,
+                    nodesQty: nodesQty,
+                    timelinessRate: timelinessRate
+                });
+            });
+            
+            // Sort by timeliness rate (descending)
+            return tableData.sort((a, b) => b.timelinessRate - a.timelinessRate);
+        }
+
+        // Calculate overall on-time rate for ocean
+        function calculateOceanOverallRate(filteredData) {
+            const nodes = ['Pickup Date', 'ATD', 'ATA', 'Delivery'];
+            let totalDenominator = 0;
+            let totalNumerator = 0;
+            
+            nodes.forEach(node => {
+                const denominator = filteredData.filter(item => 
+                    item.milestone === node && item.milestoneDate
+                ).length;
+                
+                const numerator = filteredData.filter(item => 
+                    item.milestone === node && 
+                    item.milestoneDate && 
+                    item.gap < 24
+                ).length;
+                
+                totalDenominator += denominator;
+                totalNumerator += numerator;
+            });
+            
+            if (totalDenominator === 0) return 0;
+            return Math.round((totalNumerator / totalDenominator) * 100);
+        }
+
+        // Update ocean chart with new data
+        function updateOceanChartData(filteredData) {
+            const chartData = calculateOceanChartData(filteredData);
+            oceanTimelinessChart.data.datasets[0].data = chartData;
+            oceanTimelinessChart.update('active');
+        }
+
+        // Update ocean table with new data
+        function updateOceanTableData(filteredData) {
+            const tableData = calculateOceanTableData(filteredData);
+            const tbody = document.getElementById('oceanTableBody');
+            tbody.innerHTML = '';
+            
+            if (tableData.length === 0) {
+                // Show empty rows with dashed lines
+                for (let i = 0; i < 5; i++) {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-white/10';
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-sm text-gray-400">- - - - - - - - - -</td>
+                        <td class="py-3 px-4 text-sm text-gray-400">- - - - - - - - - -</td>
+                        <td class="py-3 px-4 text-sm text-gray-400">- - - - - - - - - -</td>
+                    `;
+                    tbody.appendChild(row);
+                }
+                return;
+            }
+            
+            tableData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-white/10 hover:bg-white/5 transition-colors';
+                row.innerHTML = `
+                    <td class="py-3 px-4 text-sm font-medium text-white">${item.tpl}</td>
+                    <td class="py-3 px-4 text-sm text-gray-300">${item.nodesQty}</td>
+                    <td class="py-3 px-4 text-sm text-gray-300">${item.timelinessRate}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Update ocean overall on-time rate
+        function updateOceanOverallRate(filteredData) {
+            const overallRate = calculateOceanOverallRate(filteredData);
+            const rateElement = document.querySelector('#oceanDateRange').closest('.bg-gradient-to-r').querySelector('h3');
+            rateElement.textContent = `Overall On-Time Rate: ${overallRate}%`;
+        }
+
+        // Get air sample data (similar to Air Booking Report structure)
+        function getAirSampleData() {
+            const allData = [];
+            
+            // Generate sample data for 100 records
+            for (let i = 1; i <= 100; i++) {
+                // Generate random date between Aug 1-30, 2025
+                const day = (i % 30) + 1; // 1-30
+                const hour = (i % 24); // 0-23
+                const minute = (i % 60); // 0-59
+                
+                // Format: 2025/8/20 12:00
+                const bookingDate = `2025/8/${day}`;
+                const eventTimeLocal = `2025/8/${day} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                
+                // Generate milestone-specific data
+                const milestone = ['Pickup Date', 'ATD', 'ATA', 'Delivery'][i % 4];
+                let milestoneDate = '';
+                
+                // Set milestone dates based on type
+                switch(milestone) {
+                    case 'Pickup Date':
+                        milestoneDate = `2025/8/${day}`;
+                        break;
+                    case 'ATD':
+                        milestoneDate = `2025/8/${(day + 1) % 30 + 1}`;
+                        break;
+                    case 'ATA':
+                        milestoneDate = `2025/8/${(day + 2) % 30 + 1}`;
+                        break;
+                    case 'Delivery':
+                        milestoneDate = `2025/8/${(day + 3) % 30 + 1}`;
+                        break;
+                }
+                
+                // Generate gap (hours) - some records will have gap < 24 (on-time)
+                const gap = i % 4 === 0 ? (i % 48) : (i % 72); // 1/4 records have gap < 24
+                
+                allData.push({
+                    bookingNo: `AB${i.toString().padStart(3, '0')}`,
+                    milestone: milestone,
+                    milestoneDate: milestoneDate,
+                    eventTimeLocal: eventTimeLocal,
+                    tpl: ['FedEx', 'UPS', 'DHL', 'Emirates', 'Lufthansa'][i % 5],
+                    gap: gap
+                });
+            }
+            
+            return allData;
+        }
+
+        // Filter air data by date range
+        function filterAirDataByDateRange(data, startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            return data.filter(item => {
+                const itemDate = new Date(item.milestoneDate);
+                return itemDate >= start && itemDate <= end;
+            });
+        }
+
+        // Calculate air chart data based on business logic
+        function calculateAirChartData(filteredData) {
+            const nodes = ['Pickup Date', 'ATD', 'ATA', 'Delivery'];
+            const chartData = [];
+            
+            nodes.forEach(node => {
+                // Denominator: count of records where milestone date is not empty and within date range
+                const denominator = filteredData.filter(item => 
+                    item.milestone === node && item.milestoneDate
+                ).length;
+                
+                if (denominator === 0) {
+                    chartData.push(0);
+                    return;
+                }
+                
+                // Numerator: count of records where gap < 24 hours
+                const numerator = filteredData.filter(item => 
+                    item.milestone === node && 
+                    item.milestoneDate && 
+                    item.gap < 24
+                ).length;
+                
+                // Calculate percentage
+                const percentage = Math.round((numerator / denominator) * 100);
+                chartData.push(percentage);
+            });
+            
+            return chartData;
+        }
+
+        // Calculate air table data based on business logic
+        function calculateAirTableData(filteredData) {
+            // Get unique 3PL codes where Event Time(Local) is not empty
+            const unique3PLs = [...new Set(filteredData
+                .filter(item => item.eventTimeLocal)
+                .map(item => item.tpl)
+            )];
+            
+            const tableData = [];
+            
+            unique3PLs.forEach(tpl => {
+                // Nodes Qty: count of records for this 3PL where Event Time(Local) is not empty
+                const nodesQty = filteredData.filter(item => 
+                    item.tpl === tpl && item.eventTimeLocal
+                ).length;
+                
+                if (nodesQty === 0) return;
+                
+                // Timeliness Rate: count of records where gap < 24 hours
+                const onTimeCount = filteredData.filter(item => 
+                    item.tpl === tpl && 
+                    item.eventTimeLocal && 
+                    item.gap < 24
+                ).length;
+                
+                const timelinessRate = Math.round((onTimeCount / nodesQty) * 100);
+                
+                tableData.push({
+                    tpl: tpl,
+                    nodesQty: nodesQty,
+                    timelinessRate: timelinessRate
+                });
+            });
+            
+            // Sort by timeliness rate (descending)
+            return tableData.sort((a, b) => b.timelinessRate - a.timelinessRate);
+        }
+
+        // Calculate overall on-time rate for air
+        function calculateAirOverallRate(filteredData) {
+            const nodes = ['Pickup Date', 'ATD', 'ATA', 'Delivery'];
+            let totalDenominator = 0;
+            let totalNumerator = 0;
+            
+            nodes.forEach(node => {
+                const denominator = filteredData.filter(item => 
+                    item.milestone === node && item.milestoneDate
+                ).length;
+                
+                const numerator = filteredData.filter(item => 
+                    item.milestone === node && 
+                    item.milestoneDate && 
+                    item.gap < 24
+                ).length;
+                
+                totalDenominator += denominator;
+                totalNumerator += numerator;
+            });
+            
+            if (totalDenominator === 0) return 0;
+            return Math.round((totalNumerator / totalDenominator) * 100);
+        }
+
+        // Update air chart with new data
+        function updateAirChartData(filteredData) {
+            const chartData = calculateAirChartData(filteredData);
+            airTimelinessChart.data.datasets[0].data = chartData;
+            airTimelinessChart.update('active');
+        }
+
+        // Update air table with new data
+        function updateAirTableData(filteredData) {
+            const tableData = calculateAirTableData(filteredData);
+            const tbody = document.getElementById('airTableBody');
+            tbody.innerHTML = '';
+            
+            if (tableData.length === 0) {
+                // Show empty rows with dashed lines
+                for (let i = 0; i < 5; i++) {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-white/10';
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-sm text-gray-400">- - - - - - - - - -</td>
+                        <td class="py-3 px-4 text-sm text-gray-400">- - - - - - - - - -</td>
+                        <td class="py-3 px-4 text-sm text-gray-400">- - - - - - - - - -</td>
+                    `;
+                    tbody.appendChild(row);
+                }
+                return;
+            }
+            
+            tableData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-white/10 hover:bg-white/5 transition-colors';
+                row.innerHTML = `
+                    <td class="py-3 px-4 text-sm font-medium text-white">${item.tpl}</td>
+                    <td class="py-3 px-4 text-sm text-gray-300">${item.nodesQty}</td>
+                    <td class="py-3 px-4 text-sm text-gray-300">${item.timelinessRate}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Update air overall on-time rate
+        function updateAirOverallRate(filteredData) {
+            const overallRate = calculateAirOverallRate(filteredData);
+            const rateElement = document.querySelector('#airDateRange').closest('.bg-gradient-to-r').querySelector('h3');
+            rateElement.textContent = `Overall On-Time Rate: ${overallRate}%`;
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            // Ocean Timeliness Chart - Based on screenshot data
+            const oceanCtx = document.getElementById('oceanTimelinessChart').getContext('2d');
+            oceanTimelinessChart = new Chart(oceanCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pickup Date', 'ATD', 'ATA', 'Delivery'],
+                    datasets: [{
+                        label: 'On-Time Rate (%)',
+                        data: [95, 98, 99, 90], // Based on screenshot data
+                        backgroundColor: [
+                            'rgba(14, 165, 233, 0.8)',  // Ocean blue
+                            'rgba(16, 185, 129, 0.8)',  // Green
+                            'rgba(16, 185, 129, 0.8)',  // Green
+                            'rgba(245, 158, 11, 0.8)'   // Orange
+                        ],
+                        borderColor: [
+                            'rgba(14, 165, 233, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 255, 255, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `On-Time Rate: ${context.parsed.y}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 120, // Based on screenshot Y-axis range
+                            ticks: {
+                                stepSize: 20, // Based on screenshot scale
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Air Timeliness Chart - Based on screenshot data
+            const airCtx = document.getElementById('airTimelinessChart').getContext('2d');
+            airTimelinessChart = new Chart(airCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pickup Date', 'ATD', 'ATA', 'Delivery'],
+                    datasets: [{
+                        label: 'On-Time Rate (%)',
+                        data: [92, 95, 90, 92], // Based on screenshot data
+                        backgroundColor: [
+                            'rgba(139, 92, 246, 0.8)',  // Air purple
+                            'rgba(16, 185, 129, 0.8)',  // Green
+                            'rgba(245, 158, 11, 0.8)',  // Orange
+                            'rgba(139, 92, 246, 0.8)'   // Air purple
+                        ],
+                        borderColor: [
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(139, 92, 246, 1)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 255, 255, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `On-Time Rate: ${context.parsed.y}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100, // Based on screenshot Y-axis range
+                            ticks: {
+                                stepSize: 10, // Based on screenshot scale
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Submenu toggle functionality
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const arrow = document.getElementById(menuId + '-arrow');
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+
+
+        // Logout function
+        function logout() {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
